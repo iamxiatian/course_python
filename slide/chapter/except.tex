@@ -316,10 +316,65 @@ if book.price > 50:
 \end{frame}
 
 
-\subsection{单元测试}
-\begin{frame}[fragile]{单元测试}
-  单元测试是用来对一个模块、一个函数或者一个类来进行正确性检验的测试工作。
+\subsection{测试}
 
+\begin{frame}[fragile]{测试}
+  \begin{easylist}
+    & 代码规范检查
+    & 单元测试
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{代码规范检查}
+  \begin{easylist}
+    & PEP8:Style Guide for Python Code
+    && https://www.python.org/dev/peps/pep-0008/
+    & 工具：\href{https://www.pylint.org/}{pylint}
+    && star your python code!
+    && Coding Standard
+    &&& checking line-code's length,
+    &&& checking if variable names are well-formed according to your coding standard
+    &&& checking if imported modules are used
+    && Error detection
+    &&& checking if declared interfaces are truly implemented
+    &&& checking if modules are imported
+    &&& and much more ...
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{pylint}
+  \begin{easylist}
+    & 安装
+    && sudo pip install pylint
+    & 使用
+    && pylint some\_file.py
+    && 最终输出综合评分结果，例如：
+  \end{easylist}
+
+  \begin{tcolorbox}[colback=green!5,colframe=green!10!black,title=pylint输出结果片断]
+    \textit{
+      Global evaluation\\
+      -----------------\\
+      Your code has been rated at 8.38/10\\ }
+  \end{tcolorbox}
+
+\end{frame}
+
+\subsubsection{单元测试}
+\begin{frame}[fragile]{单元测试}
+\begin{easylist}
+  & 单元测试是用来对一个模块、一个函数或者一个类来进行正确性检验的测试工作。
+  & TDD：Test-Driven Development
+  && 敏捷开发中的一项常用技术和设计方法，即通过测试来推动整个开发的进行，在明确
+  需要开发的功能后，首先思考如何对功能进行测试，进而完成测试用例代码的编写，然后
+  实现具体产品功能，满足之前设计的测试用例。
+
+
+\end{easylist}
+
+  
+
+  
 \end{frame}
 
 
@@ -329,8 +384,3 @@ if book.price > 50:
     \Huge ---END---
   \end{center}
 \end{frame}
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "../python"
-%%% End:
