@@ -16,3 +16,6 @@ xelatex python-slide.tex
 xelatex python-manual.tex
 ```
 
+如有问题和建议，请留言或发送邮件联系。
+
+新浪微博帐号：[[http://weibo.com/friendsummer]]
