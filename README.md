@@ -4,14 +4,15 @@ Python 3 导论
 
 本讲稿尚未完成，当前幻灯片结果可以参考python-slide.pdf，详细讲义指南参考python-manual.pdf
 
-内容采用LaTex编写，要编译LaTex生成pdf文档，请确保计算机中已经成功安装XeLaTex, 然后进入slide目录，执行
-：
-'''
+内容采用LaTex编写，要编译LaTex生成pdf文档，请确保计算机中已经成功安装XeLaTex, 然后进入slide目录，执行：
+
+```
 xelatex python-slide.tex
-'''
+```
 
 或者，进入manual目录，执行：
-'''
+
+```
 xelatex python-manual.tex
-'''
+```
 
