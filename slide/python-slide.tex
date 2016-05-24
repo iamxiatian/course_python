@@ -1,0 +1,205 @@
+\documentclass[table, t,13pt]{beamer} 
+\usepackage{graphicx}
+\usepackage{xeCJK,fontspec,xunicode,xltxtra, fancybox}
+
+%\usepackage[timeinterval=1]{tdclock}
+%box tools
+\usepackage{framed, color}
+\usepackage{colortbl, booktabs, multirow, makecell, longtable}
+
+\usepackage{soul} %for strikeout
+
+\usepackage{amsmath, amsfonts, amssymb} %amssymb for varnothing symbol
+
+\usepackage{caption, algorithm}
+\usepackage[noend]{algpseudocode}
+
+\usepackage{textpos}
+\usepackage{tikz, flowchart} % tikz绘图
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{calc, arrows, arrows.meta, shapes, shapes.geometric, positioning}
+\usetikzlibrary{topaths}
+\usetikzlibrary{mindmap}
+\usetikzlibrary{matrix}
+\pgfmathsetmacro{\myinnersep}{2}% inner sep in mm
+\include{shapes}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{external}  %缓存tikz的结果
+\tikzset{
+    external/system call={%
+    xelatex \tikzexternalcheckshellescape
+    -halt-on-error -interaction=batchmode --shell-escape
+    -jobname "\image" "\texsource"}}
+%\tikzexternalize
+
+
+\usepackage[tikz]{bclogo}  %see http://mirrors.ctan.org/graphics/bclogo/README
+\DeclareGraphicsRule{.mps}{eps}{*}{} %解决xelatex处理bclogo时的mps问题
+\newcommand{\infobox}[2]{ 
+    \begin{bclogo}[couleur=yellow!10, logo=\bcfleur, ombre=true]{#1}
+    #2
+    \end{bclogo}
+}
+\newcommand{\warnbox}[2]{ 
+    \begin{bclogo}[couleur=yellow!10, logo=\bctakecare, ombre=true]{#1}
+    #2
+    \end{bclogo}
+}
+\newcommand{\kpt}{{\color{red}$\ast$}}
+\newcommand{\h}{{\color{orange!70}$\bullet ~ $}}
+\newcommand{\hh}{{\color{orange!70}$~~ \ast ~ $}}
+
+\newcommand{\newsec}{\color{red} $\Rightarrow$}
+
+%\usetheme[height=8mm]{Madrid} % Favorite theme is Madrid! 
+%\usecolortheme[RGB={130,120,232}]{structure} 
+%\usetheme{Boadilla} 
+%\usecolortheme{default} 
+
+\usetheme{Madrid} 
+\usecolortheme{crane} 
+
+\setbeamertemplate{items}[ball] 
+\setbeamertemplate{blocks}[rounded][shadow=true] 
+
+\definecolor{red(ncs)}{rgb}{0.77, 0.01, 0.2}
+\definecolor{champagne}{rgb}{0.97, 0.91, 0.81}
+\definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
+\definecolor{vanilla}{rgb}{0.95, 0.9, 0.67}
+
+\usepackage[ampersand]{easylist}
+\newcommand\easyitem{\ListProperties(Hide=100, Hang=true, Progressive=3ex,
+  Style*=\color{orange!70}$\bullet$ ,
+  Style2*=\color{orange!70}$\ast$ ,
+  Style3*=\color{orange!70}$\circ$ ,
+  Style4*=\tiny$\blacksquare$, Space=-.5em, Space*=-.5em)}
+
+\parskip=3mm
+\parindent=15pt
+\linespread{1.1}
+
+
+%自定义的一些命令，方便使用
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+  \node[shape=circle,draw,inner sep=1.5pt] (char) {#1};}}
+
+
+% \newcommand*{\hei}{\fontfamily{FZLanTingHeiS-H-GB}\selectfont}
+%\DeclareTextFontCommand{\texthei}{\hei}
+
+\setCJKfamilyfont{FZHei}{FZLanTingHeiS-EL-GB}  
+\newcommand{\cjkbold}{\color[rgb]{0.29, 0.0, 0.51} \CJKfamily{FZHei}}  %http://latexcolor.com/
+
+\setCJKmainfont{FZLanTingHeiS-EL-GB} %方正字体，也可以改成：微软雅黑
+\setCJKsansfont{FZLanTingHeiS-EL-GB} 
+\setCJKmonofont{Consolas}
+
+
+% % 设置英文字体%==================================================
+%\defaultfontfeatures{Scale=MatchLowercase} % 这个参数保证 serif、sans-serif 和
+% %monospace 字体在小写时大小匹配
+%\setmainfont[Mapping=tex-text]{Ubuntu} % 使用 XeTeX 的 text-mapping 方案，正确显示 LaTeX 样式的双引号（`` ''）%
+
+%\setsansfont[Mapping=tex-text]{Consolas}
+%\setmonofont{Ubuntu Light}
+
+% FONTS
+\defaultfontfeatures{Mapping=tex-text}
+\setsansfont[  %\setmainfont[
+SmallCapsFont = Fontin-SmallCaps.otf,
+BoldFont = Fontin-Bold.otf,
+ItalicFont = Fontin-Italic.otf
+]
+{Fontin.otf}
+
+
+
+\newcommand{\cjkem}{\CJKfamily{FZHeiR}} 
+\renewcommand{\em}[1]{\color{red} #1}
+
+\XeTeXlinebreaklocale "zh"  
+\XeTeXlinebreakskip = 0pt plus 1pt 
+
+\usepackage{listings,lstautogobble}
+\input{lststyle}
+
+\lstnewenvironment{python}{\renewcommand\lstlistingname{Python} %
+\lstset{language=python,basicstyle=\rmfamily\normalsize, prebreak=, %
+  autogobble=true, keywordstyle=\ttfamily, %
+  escapechar=|,
+  numberstyle=\tiny\color{orange!90}\ttfamily, showstringspaces=false} } %
+{}
+
+\lstnewenvironment{bash}{\renewcommand\lstlistingname{Bash} %
+\lstset{language=bash,basicstyle=\rmfamily\normalsize, prebreak=, %
+  autogobble=true, keywordstyle=\ttfamily, numberstyle=\tiny\color{green!70}\ttfamily}} %
+{}
+
+\newcommand{\pyinline}[1]{\small{\color{blue!50!green}$>>>$}
+  \lstinline[language=python, basicstyle=\rmfamily\normalsize, keywordstyle={\ttfamily\color{blue!50!black}}]!#1!}
+
+\hypersetup{
+  pdftitle={Python程序设计},
+  pdfsubject={Python},
+  pdfkeywords={Python},
+  pdfproducer={LaTeX},
+  pdfcreator={XeLaTeX}
+}
+
+
+%\setbeamercolor{title}{bg=red(ncs), fg=white}
+%\setbeamercolor{frametitle}{fg=red(ncs),bg=gray!10!white}
+\setbeamercolor{title}{fg=coolblack, bg=vanilla}
+\setbeamercolor{frametitle}{fg=coolblack, bg=vanilla!0}
+
+\setbeamercolor{palette primary}{fg=black, bg=gray!15!white}
+\setbeamercolor{palette secondary}{fg=black, bg=gray!10!white}
+\setbeamercolor{palette tertiary}{fg=black, bg=gray!15!white}
+
+
+\addtobeamertemplate{frametitle}{}{%
+\begin{textblock*}{1.0\paperwidth}(-.001\textwidth,0cm)
+%\tikz{\draw[orange!95, line width=1.1] (-2cm,0cm) -- (0.5\textwidth,0cm);\draw[orange!95,yshift=-0.55] (0.5\textwidth,0cm) -- (0.7\textwidth,0cm);}
+\end{textblock*}
+\begin{textblock*}{100mm}(.88\textwidth,-1cm)
+\includegraphics[height=1.2cm,width=1.2cm]{ruc_logo.png}
+\end{textblock*}
+}
+
+%gets rid of bottom navigation bars
+\setbeamertemplate{footline}[page number]{}
+
+%gets rid of navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamercolor{item projected}{bg=orange!70!orange,fg=white}
+\setbeamertemplate{enumerate items}[circle]
+
+\begin{document}
+
+%\logo{\includegraphics[width=1.0cm,height=1.0cm]{figure/ruc.jpg}}
+\title{Python程序设计}
+\author{Xia Tian \\ Email: xiat(at)ruc.edu.cn}
+\institute{Renmin University of China}
+\date{\today{}}
+%\date[\initclock\tdtime]{\today}  
+\frame{\titlepage}
+
+\include{chapter/introduction}
+%\include{chapter/datatype}
+%\include{chapter/control}
+%\include{chapter/function}
+%\include{chapter/module}
+%\include{chapter/library}
+%\include{chapter/oo}
+\include{chapter/except}
+%\include{chapter/app}
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

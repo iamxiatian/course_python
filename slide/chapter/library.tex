@@ -1,0 +1,284 @@
+\section{Python标准库}
+
+\begin{frame}[fragile]{CH6 Python标准库}
+  \begin{easylist} \easyitem
+    & 内置电池：Battery Included
+    &&　用于形容Python标准库
+    & 标准模块
+    && string 
+    && io \& sys
+    && optparse
+    && math
+    && random
+  \end{easylist}
+\end{frame}
+
+\subsection{字符串标准模块：string}
+\begin{frame}[fragile]{字符串标准模块：string}
+  \begin{easylist}
+    & 提供了字符串相关的一些常量 
+
+    \pyinline{string.ascii\_letters} 
+
+    \pyinline{string.ascii\_lowercase} 
+
+    \pyinline{string.ascii\_uppercase} 
+
+    \pyinline{string.digits} 
+
+    \pyinline{string.hexdigits} 
+
+    \pyinline{string.punctuation}
+
+  \end{easylist}
+\end{frame}
+
+
+\subsection{IO输出相关模块}
+\begin{frame}[fragile]{IO输出相关标准模块}
+  \begin{easylist}
+    & 标准输出
+    && sys.stdout
+    & 字符串输出
+    && io.StringIO
+    & 以下输出方式是等价的
+  \end{easylist}
+
+  \begin{python}
+    import sys,io
+    print("hello")
+    print("hello", file=sys.stdout)
+    sys.stdout.write("hello\n") #python3 中会同时输出字符串的数量
+  \end{python}
+\end{frame}
+
+\begin{frame}[fragile]{StringIO}
+  \begin{easylist}
+    & 如果要把输出重定向到字符串中，在需要时再获取，可以StringIO
+    && 注意：Python 2.x和3.x在输出时的行为不同
+  \end{easylist}
+
+  \begin{python}
+    import sys, io
+    out = io.StringIO()
+    sys.stdout = out
+    out.write('how are you')
+    print('hello')
+    print('guys')
+    sys.stdout = sys.__stdout__
+    print(out.getvalue())
+  \end{python}
+\end{frame}
+
+
+\subsection{命令行参数模块}
+\begin{frame}[fragile, allowframebreaks]{命令行参数模块：optparse}
+  \begin{easylist}
+    & 如何指定脚本运行的命令行参数
+    && 例如，Linux命令 ls --l
+    && Python提供的optparse模块对命令行参数的解析处理提供了良好的支持
+  \end{easylist}
+
+  \lstinputlisting[keywordstyle=\ttfamily]{src/ch6/cmdopt.py}
+\end{frame}
+
+
+\begin{frame}[fragile]{分析}
+  \begin{easylist}
+    & 说明
+    && 长短参数名称
+    && 参数对应的变量名称及获取方式
+    && metavar参数：提醒用户该命令行参数所期待的参数，参数中的字符串会自动变为大写
+    && parser.parse\_args()
+    &&& 解析后得到的options拥有两个属性：filename和verbose
+
+    & 假设文件保存到cmdopt.py，执行:
+    && python3 cmdopt.py -f cmdopt.py，观察输出结果
+    && python3 cmdopt.py -h
+  \end{easylist}
+
+\end{frame}
+
+
+\subsection{数学标准模块：math}
+\begin{frame}[fragile]{数学标准模块：math}
+  \begin{easylist}
+    & math.exp(x)
+    \[e^x\]
+    & math.sqrt(x)
+    \[\sqrt{x}\]
+    & math.pi
+    & math.e
+    & math.log
+    && \pyinline{math.log(math.e)}
+    && \pyinline{math.log2(2)}
+    && \pyinline{math.log10(10)}
+    && \pyinline{math.log1p(math.e - 1)}
+  \end{easylist}
+\end{frame}
+
+
+\subsection{随机数模块：random}
+\begin{frame}[fragile]{随机数标准模块：random}
+  \begin{easylist}
+    & 生成$[0, 1)$之间的随机数
+    && \pyinline{import random}
+    && \pyinline{random.random()}
+    & random.gauss(mu, sigma)生成一个均值为mu,标准值为sigma的符合高斯分布的随机
+    数
+    && \pyinline{random.gauss(0, 1)}
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{高斯分布模拟}
+  \begin{easylist}
+    & 通过random.gauss()生成一组随机数
+    & 通过柱状图显示结果
+  \end{easylist}
+  \pause
+  \begin{python}
+    import matplotlib.pyplot as plt
+    import random
+
+    data = [random.gauss(0,1) for x in range(10000)]
+    plt.hist(data, bins = 50)
+    plt.show()
+  \end{python}
+\end{frame}
+
+\begin{frame}[fragile]{Result}
+  \includegraphics[width=0.8\textwidth]{figure/gauss1.png}
+\end{frame}
+
+
+\begin{frame}[fragile]{高斯分布模拟}
+  \begin{easylist}
+    & 通过高斯分布的概率密度函数生成(x, y)对，利用散点图显示结果
+    \[ f(x) = \dfrac{1}{\sigma \sqrt{2 \pi}} e^{-\dfrac{(x-\mu)^2}{2 \sigma^2}} \]
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{高斯分布模拟代码}
+  \lstinputlisting[keywordstyle=\ttfamily]{src/ch6/gauss.py}
+\end{frame}
+
+\begin{frame}[fragile]{Result}
+  \includegraphics[width=0.8\textwidth]{figure/gauss2.png}
+\end{frame}
+
+
+\subsection{日志处理模块: logging}
+\begin{frame}[fragile]{日志处理标准库：logging}
+  \begin{easylist}
+    & 日志的作用
+    
+    & 日志的级别
+    && DEBUG：详细的信息,通常只出现在诊断问题上
+    && INFO:确认一切按预期运行
+    && WARNING:一个迹象表明,一些意想不到的事情发生了,或表明一些问题在不久的将来(例如。磁盘空间低”)。这个软件还能按预期工作。
+    && ERROR:个更严重的问题,软件没能执行一些功能
+    && CRITICAL:一个严重的错误,这表明程序本身可能无法继续运行
+    
+    & 优先级关系
+    && CRITICAL > ERROR > WARNING > INFO > DEBUG
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{日志示例}
+  
+  \begin{python}
+import logging
+
+logging.debug('debug message')
+logging.info('info message')
+logging.warning('warning message')
+logging.error('error message')
+logging.critical('critical message')
+  \end{python}
+
+\begin{easylist}
+  & 默认输出到控制台，级别在warning及以上的信息会输出，
+  & 可以通过basicConfig设置输出方式和记录级别
+\end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{日志示例：输出到文件}
+  \begin{python}
+import os
+import logging
+
+
+FILE = os.getcwd()
+logging.basicConfig(filename=os.path.join(FILE, 'log.txt'),
+                    level=logging.DEBUG)
+logging.debug('some debug messages...')
+logging.info('some info messages...')
+logging.warning('some warning messages...')
+  \end{python}
+\end{frame}
+
+
+% \subsection{正则表达式模块：re}
+% \begin{frame}[fragile]{正则表达模块：re}
+%   ~
+% \end{frame}
+
+
+% \subsection{os与os.path标准模块}
+% \begin{frame}[fragile]{os与os.path标准模块}
+%   ~
+% \end{frame}
+
+\begin{frame}[fragile]{第3方扩展：Requests}
+  \begin{easylist}
+    & 通过Requests包可以更方便地实现Web数据的采集
+    && Install: pip install requests
+  \end{easylist}
+
+  \begin{python}
+import requests
+
+url = 'http://download.pchome.net/wallpaper/zhiwu/'
+response = requests.get(url)
+print(response.text)    
+  \end{python}
+\end{frame}
+
+\begin{frame}[fragile]{BeautifulSoup}
+  \begin{easylist}
+    & 怎么解析抓取到的网页，例如，如何抽取网页中的图片？
+    & BeautifulSoup --- Html Parser
+    && Install: pip install beautifulsoup4
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{Example}
+  \begin{python}
+import requests
+
+url = 'http://download.pchome.net/wallpaper/zhiwu/'
+response = requests.get(url)
+print(response.text)
+
+from bs4 import BeautifulSoup as soup
+doc = soup(response.text, 'html')
+images = [element.get('src') for element in doc.find_all('img')]    
+  \end{python}
+\end{frame}
+
+\begin{frame}[fragile]{课堂练习}
+  \begin{easylist}
+    & 编写程序，实现对任意指定网页，下载该网页包含的所有图片到指定的文件夹当中
+  \end{easylist}
+
+\end{frame}
+
+\begin{frame}[fragile]{Thanks}
+  ~
+\end{frame}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../python"
+%%% End:

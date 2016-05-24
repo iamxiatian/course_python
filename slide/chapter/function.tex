@@ -1,0 +1,372 @@
+\section{函数}
+
+\begin{frame}[fragile]{CH4 函数}
+  \begin{enumerate}
+     \item 函数的创建
+     \item 函数参数
+     %\item 参数魔法
+     \item 作用域
+     \item 名称与docstring
+     %\item 注解
+     \item 递归
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{函数介绍}
+  \begin{easylist} \easyitem
+    & 函数的类型
+    && 全局函数
+    && 局部函数
+    && lambda函数: 特殊表达式，比普通函数有更多限制
+    && 方法
+    & 根据功能的实现者不同
+    && 内置函数
+    && 第三方函数
+    && 自己编写的函数
+  \end{easylist}
+\end{frame}
+
+\subsection{函数的创建}
+\begin{frame}[fragile]{函数的创建}
+  \begin{python}
+    def functionName(parameters):
+        suite
+  \end{python}
+
+  \begin{easylist}
+    & parameters是可选的，如果有多个，则用英文逗号分隔
+    & 函数参数可以有默认值
+    & 每个函数都有返回值，如果未明确指定返回，则返回None
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{函数创建示例}
+  计算前top\_n个元素的平均值
+  \begin{python}
+    def avg_top(lst, top_n):
+        total = 0
+        for e in lst[:top_n]:
+            total += e
+        print(total/top_n)
+
+    avg_top([1,3,9,7,6], 4)
+  \end{python}
+\end{frame}
+
+\subsection{函数参数}
+\begin{frame}[fragile]{函数参数}
+  \begin{easylist}
+    & 参数可以有默认值
+  \end{easylist}
+
+  \begin{python}
+    def avg_top(lst, top_n=4):
+        total = 0
+        for e in lst[:top_n]:
+            total += e
+        print(total/top_n)
+
+    avg_top([1,3,9,7,6])
+  \end{python}
+\end{frame}
+
+\begin{frame}[fragile]{形式参数与实际参数}
+  \begin{easylist}
+    & 写在def语句中函数名称后面的变量叫函数的形式参数
+    & 函数调用时提供的值称为实际参数
+    & 字符串、数字等普通类型默认为传值调用
+    & 列表、元组等默认为传递引用方式
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{传值调用示例}
+  \begin{python}
+    def change(name):
+        name = 'Summer'
+
+    name = 'Spring'
+    change(name)
+    print(name)
+  \end{python}
+
+  此时，输出的name为Spring还是Summer？
+\end{frame}
+
+
+\begin{frame}[fragile]{传递引用调用示例}
+  \begin{python}
+    def change_list(lst):
+        lst.append('Summer')
+    
+    x = ['Spring']
+    change_list(x)
+    print(x)
+  \end{python}
+
+  此时，输出的x结果是['Spring', 'Summer']，还是['Spring']?
+\end{frame}
+
+
+\begin{frame}[fragile]{位置参数与关键字参数}
+  \begin{easylist}
+    & 函数默认按照声明位置依次传入参数，即位置参数
+    & 当参数顺序难以记忆时，可以使用关键字参数方式，即指定参数名称和参数值的方式
+    传递参数
+  \end{easylist}
+
+  \begin{python}
+    def hello(name, greeting):
+        print("%s, %s!" % (name, greeting))
+    
+    hello("悟空", "欢迎你")
+    hello(greeting="欢迎你", name="悟空" )
+    hello(name="悟空", greeting="欢迎你")
+  \end{python}
+  
+  后面三条语句的输出结果分别是什么？
+\end{frame}
+
+
+\begin{frame}[fragile]{收集参数}
+  \begin{easylist}
+    & 有时候允许用户提供任意数量的参数非常有用，如实现任意数量的数字的加法
+    & Python允许在一个形式参数名称前面加上星号*，表示收集该位置开始的任意数量的
+    参数
+    & 任意多个关键字参数的收集：**修饰符 (自学)
+  \end{easylist}
+
+  \begin{python}
+    def add(*numbers):
+        total = 0
+        for n in numbers:
+            total += n
+        return total
+
+    add(1,2,3)
+  \end{python}
+\end{frame}
+
+
+\subsection{Lambda函数}
+\begin{frame}[fragile]{Lambda函数}
+  \begin{easylist}
+    & 一种快速定义单行的最小函数
+    & 按照如下语法创建的匿名函数
+    && lambda parameters: expression
+    & 特点
+    && parameters是可选的
+    && epxression不能包含分支或循环，但可以使用条件表达式
+    && 不能包含return, yield语句
+    && 结果为一个匿名函数
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{Lambda函数示例}
+  \begin{python}
+def f(x,y):
+    return x*y
+
+g = lambda x,y: x*y
+print(f(3,4))
+print(g(3,4))
+  \end{python}
+
+  \begin{easylist}
+    & 上例中函数f和g的效果相同，但g的定义更快捷
+    & 区别：def 是语句而lambda是表达式
+  \end{easylist}
+\end{frame}
+
+
+%\subsection{参数魔法}
+
+
+\subsection{作用域}
+\begin{frame}[fragile]{作用域}
+  \begin{easylist}
+    & 全局变量
+    && 函数内部可以直接调用之前声明的全局变量，但不建议使用这种方式
+    & 局部变量
+    && 在函数(类)内部定义的变量
+  \end{easylist}
+
+  \begin{python}
+    def f(): 
+        x = 10
+    
+    x = 1
+    f()
+    print(x)
+  \end{python}
+  结果为：?
+\end{frame}
+
+\begin{frame}[fragile]{在函数内部绑定全局变量}
+  \begin{easylist}
+    & 通过global关键字在函数内部将变量绑定为全局变量
+  \end{easylist}
+
+  \begin{python}
+    def f():   
+        global x
+        x = 10
+    
+    x = 1
+    f()
+    print(x)
+  \end{python}
+
+  结果为：10
+\end{frame}
+
+
+
+\subsection{名称与docstring}
+
+\begin{frame}[fragile]{参数的命名建议}
+  \begin{easylist}
+    & 对函数及其参数合理命名有助于代码理解
+    && 使用命名框架，保持一致性
+    && 所有名称避免使用缩略(除非是标准化且广泛使用的)
+    && 合理地使用变量与参数名
+    &&& x: 适合作为坐标参数
+    &&& i: 适合用于简单的循环计数
+    && 函数名与方法名应可以表现其行为或返回值
+    &&& E.g. 查找在列表中的位置
+    \begin{python}
+      def find(l, s, i=0)
+      def linear_search(l, s, i = 0)
+      def first_index_of(sorted_name_list, name, start=0) #GOOD!
+    \end{python}
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{docstring}
+  \begin{easylist}
+    & 对于上面的函数first\_index\_of，如果没有找到对应的name该怎么处理，是返回$-1$，
+    还是产生异常？这类信息可以通过docstring提供给函数使用者
+    & docstring第一行是对函数的一个简短的描述，紧接着一个空白行，然后是完整描述，
+    如果是交互式输入再执行的程序，还会给出一些示例
+    & 例子
+  \end{easylist}
+
+\end{frame}
+
+\begin{frame}[fragile]{docstring示例}
+  \tiny
+  \lstinputlisting[keywordstyle=\ttfamily,
+  basicstyle=\rmfamily\small]{src/finder.py} 
+\end{frame}
+
+\subsection{注解}
+
+\subsection{递归}
+\begin{frame}[fragile]{递归}
+  \begin{easylist}
+    & 函数不仅可以调用其他函数，还可以调用自身
+    & 递归的典型特点是一个函数不断调用自身，当到达指定条件时，再逐级返回
+    & 普通的幂函数实现
+  \end{easylist}
+
+  \begin{python}
+def power(x, n):
+    result = 1
+    for i in range(n):
+        result = result*x
+    return result
+
+power(2,3) #应输出8
+  \end{python}
+\end{frame}
+
+\begin{frame}[fragile]{幂函数的递归实现}
+  \begin{easylist}
+    & 对于任意数字x，power(x,0) = 1
+    & 对于任意大于0的数n来说，power(x,n)是x乘以power(x, n-1)的结果
+  \end{easylist}
+
+  \begin{python}
+def power(x, n):
+    if(n==0): 
+        return 1
+    else:
+        return power(x, n-1)*x
+    
+power(2,3)#应输出8
+  \end{python}
+\end{frame}
+
+
+\begin{frame}[fragile]{课堂练习}
+  \begin{easylist}
+    & 利用递归算法解决汉诺塔(Hanoi Tower)问题
+  \end{easylist}
+
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{figure/hanoi.jpg}
+  \end{center}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Hanoi Tower}
+  \begin{python}
+def hanoi(a, b, c, n):
+    if n==1:
+        print("move {0} from {1} to {2}".format(n, a, c))
+    else:
+        hanoi(a, c, b, n-1)
+        print("move {0} from {1} to {2}".format(n, a, c))
+        hanoi(b, a, c, n-1)
+        
+hanoi('a', 'b', 'c', 3)    
+  \end{python}
+\end{frame}
+
+
+\begin{frame}[fragile]{求组合$n \choose m$}
+  c(n,m)=c(n-1,m-1)+c(n-1,m)
+等式左边表示从n个元素中选取m个元素，而等式右边表示这一个过程的另一种实现方法：任意选择n中的某个备选元素为特殊元素，从n中选m个元素可以由此特殊元素的分成两类情况，即m个被选择元素包含了特殊元素和m个被选择元素不包含该特殊元素。
+\end{frame}
+
+
+\subsection{函数式编程}
+\begin{frame}[fragile]{函数式编程}
+  \begin{easylist}
+    & 面向过程的程序设计
+    && 把复杂任务分解成简单的任务，简单任务通常以函数表示
+    & 函数式编程(Functional Programming)
+    && 也可以归结到面向过程的程序设计，但其思想更接近数学计算。
+    && 就是越低级的语言，越贴近计算机，抽象程度低，执行效率高，比如C语言；越高级
+    的语言，越贴近计算，抽象程度高，执行效率低，比如Lisp语言。
+    && 函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数
+    没有变量。任意一个函数，只要输入是确定的，输出就是确定的，这种没有副作用的函
+    数称为纯函数。
+    && 允许把函数本身作为参数传入另一个函数，还允许返回一个函数！
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{高阶函数：Higher-order function}
+  \begin{easylist}
+    & 变量可以指向函数
+    & 函数名也是变量
+    & 传入函数
+    & 
+  \end{easylist}
+
+\end{frame}
+
+
+\begin{frame}[plain]
+  \begin{center}
+    \Simley{1}{10}{1}
+
+    \Huge ---END---
+  \end{center}
+\end{frame}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../python"
+%%% End:

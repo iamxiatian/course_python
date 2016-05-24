@@ -1,0 +1,883 @@
+\section{Python数据类型}
+
+\begin{frame}[fragile]{CH2 数据类型}
+  \begin{easylist} \easyitem
+    & 2.1 标识符与关键字
+    & 2.2 基本数据类型
+    && 2.2.1 整数
+    && 2.2.2 布尔
+    && 2.2.3 浮点
+    && 2.2.4 字符
+    & 2.3 组合数据类型
+    && 2.3.1 序列类型：元组与列表
+    && 2.3.2 集合
+    && 2.3.3 字典（映射）
+  \end{easylist}
+\end{frame}
+
+\subsection{2.1 标识符与关键字}
+
+\begin{frame}[fragile]{2.1 标识符与关键字}
+  \begin{easylist}
+    & 标识符：任意长度的非空字符序列
+    && 要求
+    &&& 引导字符：Unicode编码字母、ASCII字符、\_，不能是数字！
+    &&& 不能是关键字
+  \end{easylist}
+
+  \begin{table}
+    \begin{center}
+      \begin{tabular}{|l | l | l |  l| l|}
+        \toprule \hline
+        and & as & assert & break & class \\ \hline
+        continue & def & del & eif & else \\ \hline
+        except & False & finally & for & from \\ \hline
+        global & if & import & in & is \\ \hline
+        lambda & None & nonlocal & not & or \\ \hline
+        pass & raise & return & True & try \\ \hline
+        while & with & yield & & \\ \hline
+        \bottomrule
+      \end{tabular}
+    \end{center}
+    \caption{Python关键字列表}
+  \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{标识符命名约定}
+  \begin{easylist}
+    & 尽量不要使用Python内置函数名与异常名, 如int, float...
+    & 避免使用名称的开始和结尾都是下划线
+    && 在Python解释器中，输入如下语句，观察输出：
+
+    $>>>$ max.\_\_doc\_\_
+
+    注意：前后各是两个下划线"\_"
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{测试}
+  $>>>$ hello-world = 1 \\ Error!
+
+  $>>>$ 5miles = 5 \\ Error!
+
+  $>>>$ int = 5 \\ 正常运行，但不建议
+
+  $>>>$ hello\_world = 'Hello world!' \\ OK
+\end{frame}
+
+
+\subsection{2.2 基本数据类型}
+\begin{frame}[fragile]{2.2 基本数据类型}
+  \begin{easylist}
+    &  基本数据类型
+    && 整数
+    && 布尔
+    && 浮点
+    && 字符
+  \end{easylist}
+\end{frame}
+
+
+\subsubsection{2.2.1 整数}
+\begin{frame}[fragile]{2.2.1 整数}
+  \begin{easylist}
+    & 默认为10进制形式 \\
+    $>>>$ 12345
+
+    & 二进制形式：0bxxxx \\
+    $>>>$ 0b1111 (15)
+
+    & 八进制形式：0oxxxx \\
+    $>>>$ 0o10 (8)
+
+    & 十六进制形式：0xABCD \\
+    $>>>$ 0xFF (255)
+
+    & 前导字符大小写均可以，如0XFF
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{数值型操作符与函数}
+  \begin{center}
+    \begin{tabular}{l | l}
+      \toprule
+      语法 & 描述 \\ 
+      \midrule
+      $x // y$ & 整除 \\ \hline
+      $x \% y $ & 取模 \\ \hline
+      $x ** y$ & x的y次幂 \\ \hline
+      abs(x) & 取绝对值 \\ \hline
+      pow(x, y) & x的y次幂 \\ \hline
+      round(x, n) & 四舍五入，n指小数位保留几位 \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{整数转换函数}
+  \begin{center}
+    \begin{tabular}{l | l}
+      \toprule
+      语法 & 描述 \\
+      \midrule
+      bin(i) & 返回整数i的二进制形式 \\ \hline
+      hex(i) & 返回整数i的十六进制形式 \\ \hline
+      int(x) & 将x转换为整数 \\ \hline
+      oct(i) & 返回i的八进制形式 \\ 
+      \bottomrule
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{整数位移操作符}
+  \begin{center}
+    \begin{tabular}{l | l}
+      \toprule
+      语法 & 描述 \\ 
+      \midrule
+      $i | j$  & 逻辑OR运算 \\ \hline
+      $i \mathbin{\char`\^} j$ & XOR \\ \hline
+      $i \& j$ & AND \\ \hline
+      $i<<j$ & i左移j位，类似于$i*(2**j)$，但不带溢出检查 \\ \hline 
+      $i>>j$ & i右移j位，类似于$i//(2**j)$，但不带溢出检查 \\ \hline
+      $\textasciitilde i$ & 反转i的每一位 \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{位逻辑操作练习}
+  $>>>$ i = 0b1010 \\
+  $>>>$ j = 0b11000 \\
+
+  $>>>$ $print(i,j,i|j, i\&j, i>>2, i<<2, \textasciitilde i)$
+
+  手工计算一下结果是多少？并利用Python解释器进行验证，注意，可以利用bin()函数，
+  查看结果的二进制形式。
+
+  \pause
+
+  输出结果：10 24 26 8 2 40 -11
+
+  \pause
+
+  \begin{easylist}
+    & \small 计算机内部通常采用补码表示整数，补码对于正数就是本身，负数补码等于源
+    码的反码加一，正数取反后在数值上体现为$-|x+1|$，负数的是$|x|-1$。
+
+    & \small 如果要表示多个布尔值，可以利用一个整数进行表示，如文件的属性有``读、写和执
+    行''三种，可以用一个三位的二进制数字表示。
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile, allowframebreaks]{原码 $\rightarrow$ 反码 $\rightarrow$ 补码}
+  \h 无符号数字：只有正数，没有负数的概念。
+
+  \begin{center}
+    \begin{tabular}{| c | c |}
+      \hline
+      ~~~十进制~~~ & ~~~~~~~二进制~~~~~~~ \\ \hline
+      0 & 0000 \\ \hline
+      1 & 0001 \\ \hline
+      2 & 0010 \\ \hline
+      3 & 0011 \\ \hline
+      4 & 0100 \\ \hline
+      $\vdots$ & $\vdots$ \\ \hline
+    \end{tabular}
+  \end{center}
+
+    \newpage
+    ~\\
+    \begin{easylist}
+      & 神说，要有光，就有了光，要有正数和负数，就有了正数和负数
+      && 为表示正数和负数，人们发明了``原码''：
+      &&& 左边第一位存放符号，正用0来表示，负用1来表示
+    \end{easylist}
+
+    \begin{center}
+      \begin{columns}[totalwidth=0.5\textwidth,t]
+        \begin{column}{.3\textwidth}
+          \centering
+          \begin{tabular}{| c | c |}
+            \hline
+            ~ & 正数 \\ \hline
+            0 & 0000 \\ \hline
+            1 & 0001 \\ \hline
+            2 & 0010 \\ \hline
+            3 & 0011 \\ \hline
+            4 & 0100 \\ \hline
+            5 & 0101 \\ \hline
+            6 & 0110 \\ \hline
+            7 & 0111 \\ \hline
+          \end{tabular}
+        \end{column}
+        
+        \begin{column}{.3\textwidth}
+          \centering
+          \begin{tabular}{| c | c |}
+            \hline
+            ~ & 负数 \\ \hline
+            -0 & 1000 \\ \hline
+            -1 & 1001 \\ \hline
+            -2 & 1010 \\ \hline
+            -3 & 1011 \\ \hline
+            -4 & 1100 \\ \hline
+            -5 & 1101 \\ \hline
+            -6 & 1110 \\ \hline
+            -7 & 1111 \\ \hline
+          \end{tabular}
+        \end{column}
+      \end{columns}
+    \end{center}
+
+    \newpage
+    ~ \\
+    \begin{easylist}
+      & 易于理解，但不利于计算机处理
+      && $1+(-1) = 0001_b + 1001_b = 1010_b = -2=$
+      && 存在正0($0000_b$)和负0($1000_b$)
+      && 正负相加不等于0
+    \end{easylist}
+
+    \newpage
+    ~\\
+    \begin{easylist}
+      & 反码
+      && 用来处理负数的，符号位置不变，其余位置相反
+    \end{easylist}
+
+    \begin{center}
+      \begin{columns}[totalwidth=0.5\textwidth,t]
+        \begin{column}{.3\textwidth}
+         \centering
+          正数：\\
+          \begin{tabular}{| c | c |}
+            \hline
+            ~ & 正数 \\ \hline
+            0 & 0000 \\ \hline
+            1 & 0001 \\ \hline
+            2 & 0010 \\ \hline
+            3 & 0011 \\ \hline
+            4 & 0100 \\ \hline
+            5 & 0101 \\ \hline
+            6 & 0110 \\ \hline
+            7 & 0111 \\ \hline
+          \end{tabular}
+        \end{column}
+        
+        \begin{column}{.3\textwidth}
+          \centering
+          \color{red} 反码：\\
+          \begin{tabular}{| c | c |}
+            \hline
+            ~ & 负数 \\ \hline
+            -0 & 1111 \\ \hline
+            -1 & 1110 \\ \hline
+            -2 & 1101 \\ \hline
+            -3 & 1100 \\ \hline
+            -4 & 1011 \\ \hline
+            -5 & 1010 \\ \hline
+            -6 & 1001 \\ \hline
+            -7 & 1000 \\ \hline
+          \end{tabular}
+        \end{column}
+
+        \begin{column}{.3\textwidth}
+          \centering
+          原码：\\
+          \begin{tabular}{| c | c |}
+            \hline
+            ~ & 负数 \\ \hline
+            -0 & 1000 \\ \hline
+            -1 & 1001 \\ \hline
+            -2 & 1010 \\ \hline
+            -3 & 1011 \\ \hline
+            -4 & 1100 \\ \hline
+            -5 & 1101 \\ \hline
+            -6 & 1110 \\ \hline
+            -7 & 1111 \\ \hline
+          \end{tabular}
+        \end{column}
+      \end{columns}
+    \end{center}
+    
+    \newpage
+    ~\\
+    \begin{easylist}
+      & 原码变成反码后，解决了正负相加等于$0$的问题
+      & 过去的$+1$和$-1$相加，变成了$0001_b+1101_b=1111_b$，刚好反码表示方式中，
+      $1111_b$象征$-0$
+      & 新问题：存在两个零，$+0$和$-0$
+      & 从原来"反码"的基础上，补充一个新的代码，负数加1，因此，$-0$由$1111_b$变
+      为$10000_b$，舍去溢出的高位，变为$0000_b$
+    \end{easylist}
+    
+    \newpage
+    ~\\
+    \begin{center}
+      \begin{columns}[t]
+        \begin{column}{.25\textwidth}
+         \centering
+          正数：\\
+          \begin{tabular}{| c | c |}
+            \hline
+            ~ & 正数 \\ \hline
+            0 & 0000 \\ \hline
+            1 & 0001 \\ \hline
+            2 & 0010 \\ \hline
+            3 & 0011 \\ \hline
+            4 & 0100 \\ \hline
+            5 & 0101 \\ \hline
+            6 & 0110 \\ \hline
+            7 & 0111 \\ \hline
+          \end{tabular}
+        \end{column}
+        
+        \begin{column}{.25\textwidth}
+          \centering
+          \color{blue} 补码：\\
+          \begin{tabular}{| c | c |}
+            \hline
+            ~ & 负数 \\ \hline
+            -0 & 0000 \\ \hline
+            -1 & 1111 \\ \hline
+            -2 & 1110 \\ \hline
+            -3 & 1101 \\ \hline
+            -4 & 1100 \\ \hline
+            -5 & 1011 \\ \hline
+            -6 & 1010 \\ \hline
+            -7 & 1001 \\ \hline
+            -8 & 1000 \\ \hline
+          \end{tabular}
+        \end{column}
+
+        \begin{column}{.25\textwidth}
+          \centering
+          \color{red} 反码：\\
+          \begin{tabular}{| c | c |}
+            \hline
+            ~ & 负数 \\ \hline
+            -0 & 1111 \\ \hline
+            -1 & 1110 \\ \hline
+            -2 & 1101 \\ \hline
+            -3 & 1100 \\ \hline
+            -4 & 1011 \\ \hline
+            -5 & 1010 \\ \hline
+            -6 & 1001 \\ \hline
+            -7 & 1000 \\ \hline
+          \end{tabular}
+        \end{column}
+
+        \begin{column}{.25\textwidth}
+          \centering
+          原码：\\
+          \begin{tabular}{| c | c |}
+            \hline
+            ~ & 负数 \\ \hline
+            -0 & 1000 \\ \hline
+            -1 & 1001 \\ \hline
+            -2 & 1010 \\ \hline
+            -3 & 1011 \\ \hline
+            -4 & 1100 \\ \hline
+            -5 & 1101 \\ \hline
+            -6 & 1110 \\ \hline
+            -7 & 1111 \\ \hline
+          \end{tabular}
+        \end{column}
+      \end{columns}
+    \end{center}
+    
+    \begin{easylist}
+      & 解决了$+0$和$-0$同时存在的问题
+      & 另外"正负数相加等于0"的问题
+      & 多了一个$-8$
+    \end{easylist}
+
+\end{frame}
+
+
+
+
+\subsubsection{2.2.2 布尔类型}
+\begin{frame}[fragile]{2.2.2 布尔类型}
+  ~ \\
+  \begin{columns}
+    \begin{column}{.3\textwidth}
+      基本用法：
+
+      \pyinline{t=True} 
+
+      \pyinline{f = False} 
+
+      \pyinline{t and f} \\
+      False 
+
+      \pyinline{t and True} \\
+      True 
+    \end{column}
+    \pause
+    \begin{column}{.6\textwidth}
+      布尔类型可以看作是一种特殊的整数类型，False为0，True为1,
+      0为False, 非0值为True，例如：
+
+      \vspace{0.5cm}
+      \pyinline{False + 1} \\ $1$
+
+      \pyinline{True - 2} \\ $-1$
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+\subsubsection{2.2.3 浮点类型}
+\begin{frame}[fragile]{2.2.3 浮点类型}
+  \textbf{float}:  计算机以二进制表示浮点数，是近似表示
+  
+  \pyinline{0.0, 5.4, 1e-2} \\
+  (0.0, 5.4, 0.01)
+  
+
+  \pyinline{x = 5.59} \\
+  \pyinline{int(x)} \\5 \\    
+  \pyinline{s=x.hex()}\\'0x1.65c28f5c28f5cp+2', 此处指数以p表示，而不是e，why? \\
+  \pyinline{y=float.fromhex(s)}
+\end{frame}
+
+\begin{frame}[fragile]{其他数字类型及操作}
+  \begin{easylist}
+    & 复数 \\
+    \pyinline{z = 1 + 2j}
+    & 扩展包
+    && math \\
+    ~\pyinline{import math} \\
+    ~\pyinline{math.pi} \\
+    ~\pyinline{math.______}
+    && decimal:精度可控 
+
+    \begin{python}
+      import decimal
+      a = decimal.Decimal(1234)
+      b = decimal.Decimal("1234567890000.1234567")
+      a + b
+    \end{python}
+    Result: Decimal('1234567891234.1234567')
+  \end{easylist}
+\end{frame}
+
+\subsection{2.2.4 字符串}
+\begin{frame}[fragile]{2.2.4 字符串}
+  \begin{easylist}
+    & 可以使用单引号或双引号，但两端必须相同
+    & 三个引号包含的字符串
+    && 可以直接在里面使用换行，而不需要进行转义处理
+    & 转义符
+    && 用于处理特殊字符，如回车、换行、引号等
+    &&& $\backslash r$, $\backslash t$, $\backslash n$, $\backslash '$,
+    $\backslash "$, $\cdots$
+    &&& $\backslash xhh$: 对应十六进制数字的字符
+    && 例子 \\
+    ~\pyinline{s = 'hello\\x20world\\n\\tI\\'m fine.'} \\
+    ~\pyinline{print(s)} \\
+    \pause
+    输出结果：\\
+    hello world\\
+    ~~~~I'm fine.
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{常见函数}
+  \begin{easylist}
+    & Python通过ord和chr两个内置函数,用于字符与ASCII码之间的转换
+    && ord()函数 \\
+    求特定字符的Unicode编码，以十进制表示返回结果 
+    && chr()函数\\
+    返回整数所对应的字符 
+  \end{easylist}
+
+  \pyinline{ord('A')}  \\65 \\
+  \pyinline{hex(ord('A'))} \\'0x41' \\
+  \pyinline{hex(ord('中'))} \\'0x4e2d' \\
+  \pyinline{chr(0x4e2d)} \\ '中'
+\end{frame}
+
+\begin{frame}[fragile]{字符串比较}
+  内部安装字符串的ASCII码值进行比较
+
+  \pyinline{"RUC" > "IRM"} \\ True
+
+  \pyinline{"China" > "Canda"} \\True
+\end{frame}
+
+\begin{frame}[fragile]{字符串分片与步距}
+  \begin{center}
+    \begin{tikzpicture}[c/.style={minimum width=1.2cm, minimum height=1cm, draw}]
+      \draw node[c] (1) {W} node[c, right=0 of 1] (2) {h} node[c, right=0 of 2] (3) {o} node[c, right=0 of 3] (4) { } node[c, right=0 of 4] (5) {a}  node[c, right=0 of 5] (6) {m}  node[c, right=0 of 6] (7) { }  node[c, right=0 of 7] (8) {I}  node[c, right=0 of 8] (9) {?};
+      \draw node[above=0 of 1] {s[-9]} node[above=0 of 2] {s[-8]} node[above=0 of 3] {s[-7]} node[above=0 of 4] {s[-6]} node[above=0 of 5] {s[-5]} node[above=0 of 6] {s[-4]} node[above=0 of 7] {s[-3]} node[above=0 of 8] {s[-2]} node[above=0 of 9] {s[-1]};
+      \draw node[below=0 of 1] {s[0]} node[below=0 of 2] {s[1]} node[below=0 of 3] {s[2]} node[below=0 of 4] {s[3]} node[below=0 of 5] {s[4]} node[below=0 of 6] {s[5]} node[below=0 of 7] {s[6]} node[below=0 of 8] {s[7]} node[below=0 of 9] {s[8]};
+    \end{tikzpicture}
+  \end{center}
+
+  \begin{easylist}
+    & 语法
+    && s[start]
+    && s[start:end]
+    && s[start:end:step]
+  \end{easylist}
+
+  \pyinline{s = 'Who am I?'} \\
+  \pyinline{s[0:6:2], s[0:3]} \\
+  'Woa', 'Who'
+\end{frame}
+
+
+\begin{frame}[fragile]{字符串步距}
+  步距默认为1，但可以为负
+
+  \pyinline{s[-1:]} \\ '?'
+
+  \pyinline{s[-1::-1]} \\'?I ma ohW'
+\end{frame}
+
+
+\begin{frame}[fragile,allowframebreaks]{字符串操作方法}
+  \begin{center}
+    \scriptsize
+    \begin{longtable}{p{0.3\textwidth} | p{0.6\textwidth}}
+      \toprule
+      语法 & 描述 \\ 
+      \midrule
+      s.capitalize() & 返回s的副本，并将首字母变为大小 \\ \hline
+      s.center(width,char) & 返回s中间部分的一个子字符串，长度为width，并使用空格或可选的char（长度为1的字符串）进行填充。参考str.ljust()、str.rjust()与str.format() \\ \hline
+      s.count(t,start,end) & 返回字符串s中（或在s的start:end分片中）子字符串t出现的次数 \\ \hline
+      s.encode(encoding,err) & 返回一个bytes对象，该对象使用默认的编码格式或制定的编码格式来表示该字符串 \\ \hline
+      s.endswith(x,start,end) & 如果s（或在s的start:end分片中）一字符串x（或元组中的任意字符串）结尾，就返回true，否则返回False，参考str.find() \\ \hline
+      s.expandtabs(size) & 返回s的一个副本，其中的制表符使用8个货指定数量的空格替换 \\ \hline
+      s.find(t,star,end) & 返回t在s中（或在s的start：end分片中）的最左位置，如果没有找到，就返回-1；使用str.rfind()则可以发现相应的最右边位置：参考str.index() \\ \hline
+      s.formal(...) & 返回按给定参数进行格式化后的字符串副本，这一方法及其参数将在下一小节进行讲解 \\ \hline
+      s.index(t,start,end) & 返回t在s中的最左边位置（或在s的start:end分片中），如果没有找到，就产生ValuError异常。使用sr.rindex()可以从右面开始搜索。参见str.find() \\ \hline
+      s.isalnum() & 如果s非空，并且其中的每个字符串都是字母数字的，就返回True \\ \hline
+      s.isalpha() & 如果s非空，并且其中每个字符都是字母的，就返回Ture \\ \hline
+      s.isdecimal() & 如果s非空，并且其中的每个字符都是Uicode的基数为10的数字，就返回True， \\ \hline
+      s.isdigit() & 如果s非空，并且每个字符都是一个ASCII数字，就返回Ture \\ \hline
+      s.isidentifier() & 如果s非空，并且是一个邮箱的标识符，就返回Ture \\ \hline
+      s.islower() & 如果s至少有一个可小写的字符，并且所有可小写的字符都是小写的，就返回True，参见str.isupper() \\ \hline
+      s.isnumeric() & 如果s非空，并且其中的每个字符都是数值型的Uicode字符，比如数字或小数，就返回True \\ \hline
+      s.isprintable() & 如果s非空，并且其中的每一个字符被认为死可打印的，包括空格，但不包括换行，就返回True \\ \hline
+      s.isspace() & 如果s非空，并且其中的每一个字符都是空白字符，就返回Ture \\ \hline
+      s.istitle() & 如果s是一个非空的首字母大写的字符串，就返回True，参见str.title() \\ \hline
+      s.isupper() & 如果s至少有一个可大写的字符，并且所有可大写的字符都是大写的，就返回True，参见str.islower() \\ \hline
+      s.join(seq) & 返回序列seq中每个项连接起来的后果，并以s（可以为空）在每两项之间分隔 \\ \hline
+      s.ljust(width,char) & 返回长度为width的字符串（使用空格或可选的char（长度为1的字符串）进行填充）中左对齐的字符串s的一个副本，使用str.rjust()可以右对齐，str.center()可以中间对齐，参考str.format() \\ \hline
+      s.lower() & 将s中的字符变为小写，参见str.upper() \\ \hline
+      s.maketrans() & 与str.translate()类似，参见正文谅解详细资料 \\ \hline
+      s.partition(t) & 返回包含3个字符串的元组————字符串s在t的最左边之前的部分、t、字符串s在t之后的部分。如果t不在s内，则返回s与两个空字符串。使用str.rpartition()可以在t最右边部分进行分区 \\ \hline
+      s.replace(t,u,n) & 返回s的一个副本，其中每个（或最多n个，如果给定）字符串t使用u替换 \\ \hline
+      s.split(t,n) & 返回一个字符串列表。要求在字符串t处至多分割n次，如果没有给定n，就分割尽可能多次，如果t没有给定，就在空白处分割。使用str.rsplit()可以从右边进行分割————只有在给定n并且n小于可能分割的最大次数时才能起作用 \\ \hline
+      s.splitlines(f) & 返回在行终结符处进行分割产生的列表，并剥离行终结符（除非f为True） \\ \hline
+      s.starswith(x,start,end) & 如果s（或s的start:end分片）以字符串x开始（或以元组x中的任意字符串开始），就返回True，否则返回False，参考str.endswith() \\ \hline
+      s.strip(chars) & 返回s的一个副本，并将开始处与结尾处的空白字符（或字符串chars中的字符）移除，str.lstrip()仅剥离起始处的相应字符，str.rstrip()只剥离结尾处的相应字符 \\ \hline
+      s.swapcase() & 返回s的辅副本，并将其中大写字符变为小写，小写字符变大写，参考str.lower()与str.upper() \\ \hline
+      s.title() & 返回s的副本，并将每个单词的首字母变为大写，其他字母都变为小写，参考str.istitle() \\ \hline
+      s.translate() & 与str.maketrans()类似，参考正文了解详细资料 \\ \hline
+      s.upper() & 返回s的大写化版本，参考str.lower() \\ \hline
+      s.zfill(w) & 返回s的副本，如果比w短，就在开始处添加0，使其长度为w \\ \hline
+    \end{longtable}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{join函数}
+  \pyinline{countries=["China", "USA", "Japan"]} 
+
+  \pyinline{" ".join(countries)}  \\
+  'China USA Japan' 
+
+  \pyinline{" <-> ".join(countries)} \\
+  'China <-> USA <-> Japan'
+\end{frame}
+
+\begin{frame}[fragile]{字符串复制 \emph{*}}
+  \pyinline{s = 'ab' * 3} \\
+  'ababab'
+
+  \pyinline{s *= 2} \\
+  'abababababab'
+\end{frame}
+
+\begin{frame}[fragile]{format()函数}
+  \pyinline{'{0} is {1} years old.'.format("Tom", 5)} \\
+  'Tom is 5 years old.'
+
+\end{frame}
+
+\subsection{2.3 组合数据类型}
+\begin{frame}[fragile]{2.3 组合数据类型}
+  \begin{easylist}
+    & 列表
+    & 元组
+    & 字典
+    & 集合
+  \end{easylist}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{列表}
+  \h list是一种有序的集合，可以随时添加和删除其中的元素
+
+  \pyinline{classmates = ['Michael', 'Bob', 'Tracy']} 
+
+  \pyinline{classmates} \\
+  $['Michael', 'Bob', 'Tracy']$
+
+\end{frame}
+
+\begin{frame}[fragile]{列表——索引}
+  \h 用索引来访问list中每一个位置的元素，索引是从$0$开始的，最后一个元素的索引是$-1$
+
+  \pyinline{classmates[0]} \\  
+  'Michael'
+
+  \pyinline{classmates[1]} \\  
+  'Bob'  
+
+  \pyinline{classmates[-1]} \\
+  'Tracy'
+
+  \pyinline{classmates[-2]} \\
+  'Bob'
+\end{frame}
+
+
+\begin{frame}[fragile]{列表——追加}
+    \h list是一个可变的有序表，可以往list中追加元素到末尾
+
+    \pyinline{classmates.append('Adam')} 
+
+    \pyinline{classmates} \\  
+    $['Michael', 'Bob', 'Tracy', 'Adam']$
+    
+
+    \h 可以把元素插入到指定的位置，比如索引号为1的位置
+
+    \pyinline{classmates.insert(1, 'Jack')} 
+
+    \pyinline{classmates} \\ 
+    $['Michael', 'Jack', 'Bob', 'Tracy', 'Adam']$
+\end{frame}
+
+\begin{frame}[fragile]{列表——删除}
+  \h 用pop()方法删除list末尾的元素
+
+  \pyinline{classmates.pop()} \\ 
+  'Adam'
+
+  \pyinline{classmates} \\ 
+  $['Michael', 'Jack', 'Bob', 'Tracy']$
+
+
+  \h 用pop(i)方法删除指定位置的元素
+
+  \pyinline{classmates.pop(1)} \\ 
+  'Jack'
+
+  \pyinline{classmates} \\ 
+  $['Michael', 'Bob', 'Tracy']$
+\end{frame}
+
+\begin{frame}[fragile]{列表——替换}
+  \h 赋值给对应的索引位置把某个元素替换成别的元素
+
+  \pyinline{classmates[1] = 'Sarah'} 
+
+  \pyinline{classmates} \\ 
+  $['Michael', 'Sarah', 'Tracy']$
+\end{frame}
+
+
+\begin{frame}[fragile]{列表——数据类型}
+  \h list里面的元素的数据类型可以不同
+
+  \pyinline{L = ['Apple', 123, True]} 
+
+
+  \h list元素也可以是另一个list
+
+  \pyinline{p = ['asp', 'php']} 
+
+  \pyinline{s = ['python', 'java', p, 'scheme']} 
+
+  \pyinline{s[2][1]} \\ 
+  'php'
+\end{frame}
+
+\begin{frame}[fragile]{元组}
+  \h 元组tuple是一种有序的集合，一旦初始化就不能修改，使代码更安全
+
+  \pyinline{classmates = ('Michael', 'Bob', 'Tracy')} 
+  
+\end{frame}
+
+\begin{frame}[fragile]{元组——属性}
+  \h tuple不能改变，不可以追加、删除、替换
+
+  \pyinline{t = (1, 2)} 
+
+  \pyinline{t} \\  
+  (1, 2)
+
+  
+  tuple的“可变性”
+
+  \pyinline{t = ('a', 'b', ['A', 'B'])} 
+
+  \pyinline{t[2][0] = 'X'} 
+
+  \pyinline{t[2][1] = 'Y'} 
+
+  \pyinline{t} \\
+  ('a', 'b', ['X', 'Y'])
+\end{frame}
+
+
+\begin{frame}[fragile]{字典}
+  \h 字典是一种可变的无序的数据组合类型，使用键-值（key-value）储存，进行极快的
+  查找 
+
+  \h 键必须是唯一的，必须是可哈希的
+
+  \pyinline{d = {'Michael': 95, 'Bob': 75, 'Tracy': 85}} 
+
+  \pyinline{d['Michael']} \\  
+  95
+  
+\end{frame}
+
+\begin{frame}[fragile]{字典——原理}
+  \begin{easylist}
+    & 给定一个名字，比如'Michael'，dict在内部就可以直接计算出Michael对应的存放成绩的
+    “页码” 
+    & 也就是95这个数字存放的内存地址，直接取出来，所以速度非常快
+    & 在放进去的时候，必须根据key算出value的存放位置，取的时候才能根据key直接拿到
+    value
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{字典——对应性}
+  \h 一个key只能对应一个value，多次对一个key放入value，后面的值会把前面的值冲掉
+
+  \pyinline{>>> d['Jack'] = 90}
+
+  \pyinline{d['Jack']} \\ 
+  90
+
+  \pyinline{>>> d['Jack'] = 88} 
+
+  \pyinline{d['Jack']} \\ 
+  88
+
+\end{frame}
+
+\begin{frame}[fragile]{字典——更新和删除}
+  \h 字典是可变的，所以可以用update进行更新 
+
+  \pyinline{d = {'Michael': 95, 'Bob': 75, 'Tracy': 85}} 
+
+  \pyinline{d1 = {'Jack'：80}} 
+
+  \pyinline{d.updata(d1)} 
+
+  \pyinline{d} 
+  $\{'Jack'：80 ,'Michael': 95, 'Bob': 75, 'Tracy': 85\}$
+
+
+  \h 如果要删除一个key，用pop(key)方法
+  
+  \pyinline{d.pop('Bob')} \\
+  75
+
+  \pyinline{d} \\
+  $\{'Jack'：80 ,'Michael': 95, 'Tracy': 85\}$
+\end{frame}
+
+\begin{frame}[fragile]{集合}
+    \h 集合是一个无序的、不重复的元素集，包含两种类型：可变集合（set）和不可变集合
+    （frozen set）
+    
+    ~ (1) 可变集合（set）：一组key的集合，不储存value，可添加和删除元素，非可哈希的，
+    不能用作字典的键，也不能做其他集合的元素
+
+    \pyinline{s = set([1, 1, 2, 2, 3, 3])} 
+  
+    \pyinline{s} \\  
+    {1, 2, 3}
+    
+    ~ (2) 不可变集合（frozenset）：不可添加和删除元素，可哈希的，能用作字典的键，能做其他集合的元素
+\end{frame}
+
+\begin{frame}[fragile]{集合——添加和删除}
+    \h set集合是可变的，可以用add(key)进行添加 
+
+    ~ \pyinline{s.add(4)} 
+
+    ~ \pyinline{s} \\ 
+    {1, 2, 3, 4}
+
+    \h 如果要删除一个key，用remove(key)方法 
+
+    ~ \pyinline{s.remove(4)} 
+
+    ~ \pyinline{s} \\
+    {1, 2, 3}
+\end{frame}
+
+\begin{frame}[fragile]{集合——交集和并集}
+  \h 两个set可以做数学意义上的交集、并集等操作
+
+  \pyinline{s1 = set([1, 2, 3])} 
+
+  \pyinline{s2 = set([2, 3, 4])} 
+
+  \pyinline{s1 \& s2} \\ 
+  {2, 3}
+
+  \pyinline{s1 | s2} \\
+  {1, 2, 3, 4}
+  
+\end{frame}
+
+\begin{frame}[fragile]{练习}
+  \begin{easylist}
+    & 给定一个字符串变量s，编写Python代码统计字符串中每个字符的出现频度。
+    && 例如：
+    
+    $s = 'hello'$，则输出：
+
+    e:1, h:1, l:2, o:1
+  \end{easylist}
+
+ \begin{python}
+s = 'hello world'
+d = {}
+for ch in s:
+     if d.get(ch)==None:
+         d[ch] = 1
+     else:
+         d[ch] += 1
+ \end{python}
+\end{frame}
+
+
+\begin{frame}[plain]
+  \begin{center}
+    \Simley{1}{10}{1}
+
+    \Huge ---END---
+  \end{center}
+\end{frame}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../python"
+%%% End:

@@ -1,0 +1,52 @@
+\section{Web处理}
+
+\begin{frame}[fragile]{Web服务器}
+  \begin{easylist} \easyitem
+    & 最简单的Python Web服务器
+    & Flask
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{Simple Http Server}
+  \begin{easylist}
+
+    & 最轻便的Web服务器\footnote{参数m的作用参考：
+      \url{http://www.tuicool.com/articles/jMzqYzF}}：
+
+    & 启动方式：
+    && python -m http.server
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{Flask}
+  \begin{easylist}
+    & Flask是一种简便的基于Python语言的Web应用程序开发框架
+    && Flask is a microframework for Python based on Werkzeug, Jinja 2 and good intentions. And before you ask: It's BSD licensed!
+    & 相关中文文档可在线参考：
+    &&
+    \scriptsize{\url{http://dormousehole.readthedocs.io/en/latest/quickstart.html}
+    }
+    & 安装：
+    && pip install Flask
+    & 文档
+    && http://flask.pocoo.org/docs/0.10/.latex/Flask.pdf
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{Flask简单例子}
+  \lstinputlisting[keywordstyle=\ttfamily]{src/web/flask1.py}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]{Flask简单例子}
+  \lstinputlisting[keywordstyle=\ttfamily]{src/web/flask2.py}
+\end{frame}
+
+\begin{frame}[fragile]{练习}
+  实现一个Web程序，在网页上输入一个url地址，提交后，通过浏览器显示该地址所包含的所有图片。
+\end{frame}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../python"
+%%% End:

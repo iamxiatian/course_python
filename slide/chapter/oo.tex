@@ -1,0 +1,758 @@
+\section{CH7 面向对象编程}
+
+\begin{frame}[fragile]{CH7 面向对象编程}
+  \begin{easylist} \easyitem
+    & 简介
+    & 类和实例
+    & 数据封装
+    & 继承和多态
+    & Duck Typing
+    & 获取对象信息
+    & 实例属性和类属性
+    & 高级特性
+    & 小结
+  \end{easylist}
+\end{frame}
+
+\subsection{简介}
+\begin{frame}[fragile]{\newsec 面向对象编程简介}
+  \begin{easylist}
+    & 面向对象编程OOP(Object Oriented Programming)
+    && 一种程序设计思想，OOP把对象作为程序的基本单元，一个对象包含了数据和操作
+    数据的函数。
+    && 面向过程的程序设计把计算机程序视为一系列的命令集合，即一组函数的顺序执
+    行
+    && OOP通过把大块函数切割为小块函数来降低系统的复杂度
+    && OOP把计算机程序看做是一组对象的集合，程序执行就是一些列消息在各个对象之
+    间传递，给对象发消息实际上就是调用对象对应的关联函数
+    & OOP特点
+    && 封装、继承、多态
+    & 类(Class)与实例(Instance)
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{举例: 面向过程方式}
+  处理学生成绩并打印输出，面向过程设计方式：
+
+  \begin{python}
+std1 = {'name': '韩寒', 'score':85}    
+std2 = {'name': '黄锤', 'score':90}
+
+def print_score(std):
+    print('%s: %s' % (std['name'], std['score']))
+
+print_score(std1)
+print_score(std2)
+  \end{python}
+\end{frame}
+
+\begin{frame}[fragile]{举例: 面向对象方式}
+  \begin{python}
+class Student(object):
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+
+    def print_score(self):
+        print('%s: %s' % (self.name, self.score))
+
+if __name__ == '__main__':
+    han = Student('韩寒', 85)
+    huang = Student('黄锤', 90)
+    han.print_score()
+    huang.print_score()
+  \end{python}
+\end{frame}
+
+
+\begin{frame}[fragile]{例子解释}
+  \begin{easylist}
+    & class关键字
+    & object
+    & self
+  \end{easylist}
+\end{frame}
+
+
+\subsection{类和实例}
+\begin{frame}[fragile]{\newsec 类和实例}
+  \begin{easylist}
+    & 类是抽象的模板，比如Student类
+    & 实例是根据类创建出来的一个个具体的“对象”
+    & 每个对象都拥有相同的方法，但各自的数据可能不同。
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{类的定义}
+  通过class关键字定义类
+
+  \begin{python}
+class Student(object):
+    pass
+  \end{python}
+
+  \begin{easylist}
+    & class后面紧接着是类名
+    & 类名通常是大写开头的单词
+    & 类名后紧接着是(object)，表示该类是从哪个类继承下来的
+    && object是所有类最终都会继承的类
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{类的实例化}
+  类名+()实现, 例如：
+
+  \begin{python}
+    xiaoming = Student('小明', 85)
+    print(xiaoming)    
+    print(Student)
+  \end{python}
+
+  <\_\_main\_\_.Student object at 0x7f16e99ee710> \\
+  <class '\_\_main\_\_.Student'>
+\end{frame}
+
+\begin{frame}[fragile]{实例的变量绑定}
+  可以自由地给一个实例变量绑定属性和方法，比如，给实例xiaoming绑定一个name属性，
+  和speak()方法：
+
+\begin{python}
+def speak(something):
+    print('speak:' , something)
+
+xiaoming.name = 'xiaoming'
+xiaoming.speak = speak
+print(xiaoming.name)
+xiaoming.speak('hello')
+\end{python}
+\end{frame}
+
+
+\begin{frame}[fragile]{实例的初始化}
+  通过定义特殊的\_\_init\_\_方法，在创建实例的时候，可以绑定期望的属性
+
+\begin{python}
+  class Student(object):
+
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+\end{python}
+
+\begin{easylist}
+  & \_\_init\_\_方法的第一个参数永远是self，表示创建的实例本身
+  & 在\_\_init\_\_方法内部，可以把各种属性绑定到self，因为self就指向创建的实例本
+  身。
+
+\end{easylist}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{\_\_init\_\_()解释}
+  \begin{easylist}
+    & 有了\_\_init\_\_方法，在创建实例的时候，就不能传入空的参数了，必须传入与该
+    方法匹配的参数，但self不需要传，Python解释器自己会把实例变量传进去
+  
+    \pyinline{xiaoli = Student('小李', 80)}
+    & 和普通的函数相比，在类中定义的函数只有一点不同，就是第一个参数永远是实例变
+    量self，并且，调用时，不用传递该参数。除此之外，类的方法和普通函数没有什么区
+    别，所以，仍然可以用默认参数、可变参数、关键字参数和命名关键字参数。
+
+  \end{easylist}
+\end{frame}
+
+\subsection{数据封装}
+\begin{frame}[fragile]{\newsec 数据封装}
+  \begin{easylist}
+    & 实例中拥有的属性、方法，被封装到实例中
+    & 在实例中使用本身的属性或方法，用self.xxx方式
+    & 在类中定义方法时，第一个参数必须为self
+    & 在外部调用方法时，无需指定self，类会自动把self传入
+    & 封装的优点是调用简单，无需关心内部实现细节
+  \end{easylist}
+\end{frame}
+
+
+\subsection{继承和多态}
+\begin{frame}[fragile]{\newsec 继承和多态}
+  \begin{block}{}
+    在OOP程序设计中定义一个class的时候，可以从某个现有的class继承，新的class称为
+    子类（Subclass），而被继承的class称为基类、父类或超类（Base class、Super
+    class）。
+  \end{block}
+
+  \begin{python}
+    class Postgraduate(Student):
+        '''post graduate student'''
+        pass
+  \end{python}
+
+  \color{blue}继承可以把父类的所有功能都直接拿过来，这样就不必从零做起，子类只需要新增自己特
+  有的方法，也可以把父类不适合的方法覆盖重写(多态)。
+
+\end{frame}
+
+
+\begin{frame}[fragile]{多态}
+  \begin{easylist}
+    & 多态即多种状态
+    & 同一个实体同时具有多种形式, 对基类的引用指向子类的对象
+    && 例子中，子类和父类都存在相同的sayHi()方法，此时，子类的sayHi()覆盖了父类的
+    sayHi()，在代码运行的时候，总是会调用子类的sayHi()
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile, allowframebreaks]{多态示例}
+  \lstinputlisting[keywordstyle=\ttfamily]{src/ch7/student.py}
+\end{frame}
+
+
+\begin{frame}[fragile]{isinstance}
+  \begin{easylist}
+    & 可以用isinstance判断实例的类型
+  \end{easylist}
+
+\begin{python}
+  wang = Postgraduate('王二小', 80)
+  isinstance(wang, Postgraduate) #True or False?
+  isinstance(wang, Student) #True or False?
+\end{python}
+\end{frame}
+
+
+\subsection{Duck Typing}
+\begin{frame}[fragile]{\newsec Duck Typing\footnote{\url{https://en.wikipedia.org/wiki/Duck\_typing}}}
+  \begin{easylist}
+    & 对于静态语言(如Java)，如果需要传入Student类型，则传入的对象必须是Student类
+    型或者它的子类  
+    & 对于Python这样的动态语言，只需要保证传入的对象有sayHi()方法就可以
+    & 这种设计方法称之为鸭子类型:
+    && \color{blue} 一个对象有效的语义，不是由继承自特定的类或实现特定的接口，而是由当前方法
+    和属性的集合决定。
+  \end{easylist}
+
+\begin{python}
+class Robot():
+    def sayHi(self):
+        print("I'm robot")
+        
+meet(Robot())    
+\end{python}
+\end{frame}
+
+\begin{frame}[fragile]{Duck Typing}
+  \begin{block}{Duck Test}
+    {\huge "} When I see a bird that walks like a duck and swims like a duck and quacks
+    like a duck, I call that bird a duck.{\huge "}
+
+    \begin{flushright}
+      \scriptsize{--- Indiana poet James Whitcomb Riley (1849--–1916)}
+    \end{flushright}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]{Duck Typing示例}
+  \lstinputlisting{src/ch7/duck.py}
+\end{frame}
+
+
+\subsection{获取对象信息}
+\begin{frame}[fragile]{\newsec 获取对象信息}
+  \begin{easylist}
+    & 当我们拿到一个对象的引用时，如何知道这个对象是什么类型、有哪些方法呢？
+    && isinstance(): 判断对象是否为某个类的实例 
+    && type(): 判断对象的类型
+    && dir(): 获得对象的所有属性和方法
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{type()}
+  \begin{python}
+    type(123) == type(456) 
+    type(123) == int 
+    type('hello') == str 
+
+    import types
+    type(abs) == types.BuiltinFunctionType
+    type(lambda x:x) == types.LambdaType
+    type((x for x in range(10)))==types.GeneratorType
+
+    def hi():
+        pass
+    type(hi) == types.FunctionType
+  \end{python}
+\end{frame}
+
+\begin{frame}[fragile]{dir()}
+  \begin{easylist}
+    & 获得一个对象的所有属性和方法，可以使用dir()函数，它返回一个包含字符串的list
+  \end{easylist}
+
+  \begin{python}
+    wang = Postgraduate('王小二', 80)
+    dir(wang)
+
+    ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'name', 'print_score', 'sayHi', 'score']
+  \end{python}
+\end{frame}
+
+
+\subsection{实例属性和类属性}
+\begin{frame}[fragile]{\newsec 实例属性和类属性}
+  \begin{easylist}
+    & 实例属性隶属于实例
+    && 通过self或实例绑定属性
+    & 类属性隶属于类,其所有实例均可以访问到
+    && 直接在class中定义的属性
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]{实例属性和类属性示例}
+  \begin{python}
+#实例属性示例
+class Student(object):
+    def __init__(self, name):
+        self.name = name #通过self绑定属性
+        
+s = Student('Bob')
+s.score = 90 #通过实例绑定属性
+print("%s : %s" % (s.name,  s.score))
+\end{python}
+
+\newpage
+
+\begin{python}
+#类属性示例
+class Student(object):
+    name = 'Student'
+\end{python}
+
+  $>>>$ s = Student() \# 创建实例s \\
+  $>>>$ print(s.name) \# 打印name属性，因为实例并没有name属性，所以会继续查找class的
+  name属性 \\
+  Student \\
+  $>>>$ print(Student.name) \# 打印类的name属性 \\
+  Student \\
+  $>>>$ s.name = 'Michael' \# 给实例绑定name属性 \\
+
+  \newpage
+
+  $>>>$ print(s.name) \# 由于实例属性优先级比类属性高，因此，它会屏蔽掉类的name属性 \\
+  Michael \\
+  $>>>$ print(Student.name) \# 但是类属性并未消失，用Student.name仍然可以访问 \\
+  Student \\
+  $>>>$ del s.name \# 如果删除实例的name属性 \\
+  $>>>$ print(s.name) \# 再次调用s.name，由于实例的name属性没有找到，类的name属性就显
+  示出来了 \\
+  Student    
+\end{frame}
+
+
+\subsection{小结}
+\begin{frame}[fragile]{\newsec 面向对象编程小结}
+  \begin{easylist}
+    & 类是创建实例的模板，而实例则是一个一个具体的对象，各个实例拥有的数据都互相独立，互不影响；
+
+    & 方法就是与实例绑定的函数，和普通函数不同，方法可以直接访问实例的数据；
+    & 通过在实例上调用方法，我们就直接操作了对象内部的数据，但无需知道方法内部的实现细节。
+    & 和静态语言不同，Python允许对实例变量绑定任何数据
+    && 也就是说，对于两个实例变量，虽然它们都是同一个类的不同实例，但拥有的变量
+    名称都可能不同
+    & Duck Typing
+    & 实例属性与类属性
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{练习}
+  \begin{easylist}
+    & 假设磁盘中存在一个学生成绩的文本文件,每行格式如下:
+    && 123,成工,高等数学,80
+    && 123,成工，线性代数,85
+    && 124,王小二,线性代数,80
+    && $\cdots$
+    & 利用OOP设计思想,实现以下功能：
+    && 按照学号或姓名查找满足条件的学生的所有成绩信息，并输出其平均分
+    && 根据课程名称输出所有学生的成绩，并输出平均成绩、最高分和最低分
+  \end{easylist}
+
+\end{frame}
+
+
+\begin{frame}[fragile, allowframebreaks]{Test}
+  \begin{python}
+class Query():
+    def __init__(self, filename):
+        slef.filename = filename
+        
+    def _parse_line(self, line):
+        return 123, 'zhang', 'math', 80
+        
+    def find_by_number(self, num):
+        scores = {}
+        f = open(self.filename, 'r')
+        for line in f:
+            n, name, course, score = self._parse_line(line)
+            if n == num:
+                scores[course] = score
+                
+        total = 0
+        for course, score in scores.items():
+            print(course, '==>', score)
+            total += score
+        print('avg', total/len(scores))    
+
+    if __name__ == '__main__':
+        q = Query('some_file.txt')
+        q.find_by_number(123)
+  \end{python}
+\end{frame}
+
+
+
+\subsection{Python面向对象的高级特性}
+\begin{frame}[fragile]{Python面向对象的高级特性}
+  \begin{easylist}
+    & \_\_slots\_\_
+    & @property
+    & 多重继承
+    & 定制类
+    & 枚举类
+    & 元类
+  \end{easylist}
+\end{frame}
+
+
+\subsubsection{\_\_slots\_\_}
+\begin{frame}[fragile, allowframebreaks]{\_\_slots\_\_的引入}
+  实例绑定与类的绑定示例
+  \begin{python}
+class Student(object):
+    pass
+
+s = Student()
+s.name = 'Lucy'
+print(s.name) # 输出Lucy
+
+def set_age(self, age):
+    self.age = age
+
+from types import MethodType
+s.set_age = MethodType(set_age, s) # 给实例绑定方法
+s.set_age(25) # 调用实例方法
+print(s.age) # 测试结果
+
+s2 = Student() # 创建新的实例
+s2.set_age(25) # 尝试调用方法
+  \end{python}
+
+  调用s2.set\_age(25)会给出错误提示：对象Student没有属性set\_age，此时，为了给所有
+  实例都绑定方法，可以给class绑定方法，如下：
+\begin{python}
+def set_score(self, score):
+    self.score = score
+
+Student.set_score = set_score # 在类级别上绑定方法
+
+s.set_score(100)
+print(s.score)
+s2.set_score(99)
+print(s2.score)
+\end{python}
+
+\begin{easylist}
+  & 新问题：
+  && 如果要限制对实例的属性随意赋值，该怎么处理？
+  && \_\_slots\_\_
+\end{easylist}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{\_\_slots\_\_}
+  \_\_slots\_\_规定了class能添加的属性
+
+\begin{python}
+class Student(object):
+    __slots__ = ('name', 'age')
+
+s = Student()
+s.age = 25
+s.score = 90 # Error!
+\end{python}
+
+AttributeError: 'Student' object has no attribute 'score'
+
+注意：\_\_slots\_\_定义的属性仅对当前类实例起作用，对继承的子类是不起作用的
+\end{frame}
+
+
+\subsubsection{@property}
+\begin{frame}[fragile, allowframebreaks]{@property的引入}
+  \begin{easylist}
+    & 在绑定属性时，如果我们直接把属性暴露出去，虽然写起来很简单，但是，没办法检
+    查参数
+    && 例如，成绩score，我们希望把成绩的范围限制到0--100之间
+    && 思路：增加get\_score()和set\_score()对进行读取和修改
+  \end{easylist}
+
+  \begin{python}
+class Student(object):
+    def get_score(self):
+        return self._score
+
+    def set_score(self, value):
+        if not isinstance(value, int):
+            raise ValueError('score必须是整数!')    
+        if value < 0 or value > 100:
+            raise ValueError('score必须是一个0到100之间的数字')
+        self._score = value
+  \end{python}
+
+  \newpage
+  \begin{python}
+s = Student()
+s.set_score(60)
+print(s.get_score())
+s.set_score(999) # Error!
+  \end{python}
+
+  \begin{easylist}
+    & 上面的调用方法又略显复杂
+    & 能否仍然使用s.score = 某个数字, 同时还能判断赋予的数值是否满足要求？
+    & Python的@property装饰器负责把一个方法变成属性调用
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]{@property示例}
+  \begin{python}
+class Student(object):
+    |\color{red}@property|
+    def score(self):
+        return self._score
+
+    |\color{red}@score.setter|
+    def score(self, value):
+        if not isinstance(value, int):
+            raise ValueError('score必须是整数!')    
+        if value < 0 or value > 100:
+            raise ValueError('score必须是一个0到100之间的数字')
+        self._score = value   
+\end{python}
+
+\newpage
+\begin{python}
+s = Student()
+s.score = 60
+print(s.score)
+|\color{red}s.score = 999| # Error!
+\end{python}
+\end{frame}
+
+\subsubsection{多重继承}
+\begin{frame}[fragile]{多重继承}
+  \begin{easylist}
+    & 继承是面向对象编程的一个重要的方式，因为通过继承，子类就可以扩展父类的功能。
+    & 假设我们要实现以下4种动物：
+    && Dog - 狗
+    && Bat - 蝙蝠
+    && Parrot - 鹦鹉
+    && Ostrich - 鸵鸟
+  \end{easylist}
+
+\end{frame}
+
+\begin{frame}[fragile]{设计思路}
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+      按照哺乳动物和鸟类归类:
+
+
+    \end{column}
+    
+    \begin{column}{.5\textwidth}
+      按照“能跑”和“能飞”来归类
+      
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{设计思路}
+  \begin{python}
+class Animal(object):
+    pass
+
+# 大类:
+class Mammal(Animal):
+    pass
+
+class Bird(Animal):
+    pass
+
+# 各种动物:
+class Dog(Mammal):
+    pass
+
+class Bat(Mammal):
+    pass
+
+class Parrot(Bird):
+    pass
+
+class Ostrich(Bird):
+    pass    
+  \end{python}
+\end{frame}
+
+
+\begin{frame}[fragile]{定义Runnable和Flyable}
+  \begin{python}
+class Runnable(object):
+    def run(self):
+        print('Running...')
+
+class Flyable(object):
+    def fly(self):
+        print('Flying...')
+  \end{python}
+\end{frame}
+
+\begin{frame}[fragile]{多重继承示例}
+  \begin{python}
+class Dog(Mammal, Runnable):
+    pass
+
+class Bat(Mammal, Flyable):
+    pass    
+  \end{python}
+
+  \begin{easylist}
+    & 通过多重继承，一个子类就可以同时获得多个父类的所有功能。
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{MixIn}
+  \begin{easylist}
+    & 在设计类的继承关系时，通常，主线都是单一继承下来的
+    && 如：Ostrich继承自Bird
+    & 如果需要“混入”额外的功能，通过多重继承就可以实现
+    && 比如，让Ostrich除了继承自Bird外，再同时继承Runnable
+    & 这种设计方法通常称之为MixIn
+    && 为了更好地看出继承关系，通常采用MixIn作为功能性的父类名称的后缀
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{MixIn实例}
+  \begin{python}
+class RunnableMixIn(object):
+    def run(self):
+        print('Running...')
+
+class FlyableMixIn(object):
+    def fly(self):
+        print('Flying...')
+
+class Dog(Mammal, RunnableMixIn):
+    pass    
+  \end{python}
+\end{frame}
+
+\subsubsection{对类进行定制}
+\begin{frame}[fragile]{对类进行定制}
+  \begin{easylist}
+    & \_\_len\_\_
+    & \_\_str\_\_
+    & \_\_repr\_\_
+    & \_\_iter\_\_ 与 \_\_next\_\_
+    & \_\_getitem\_\_
+    & \_\_getattr\_\_
+    & \_\_call\_\_
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{\_\_len\_\_}
+  \begin{python}
+    class Panda(object):
+    def __init__(self):
+        pass
+
+    def __len__(self):
+        return 10
+
+panda = Panda()
+len(panda)
+  \end{python}
+\end{frame}
+
+\begin{frame}[fragile]{\_\_str\_\_与\_\_repr\_\_}
+  \begin{python}
+class Panda(object):
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return '熊猫'
+
+panda = Panda()
+print(panda) # 熊猫
+panda    # <__main__.Panda at 0x7f20e414db38>
+  \end{python}
+  
+  \begin{easylist}
+    & 如何解决非print时输出地址的问题？
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{\_\_str\_\_与\_\_repr\_\_}
+  \begin{python}
+class Panda(object):
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return '熊猫'
+
+    __repr__ = __str__
+panda = Panda()
+print(panda) # 熊猫
+panda    # 熊猫
+  \end{python}  
+\end{frame}
+
+
+\begin{frame}[fragile]{\_\_iter\_\_ 与 \_\_next\_\_}
+  \begin{easylist}
+    & 方便通过for循环对对象维持的数据进行遍历
+    && 例如：假设拥有一个斐波那契数列的类Fib，通过以下语句循环输出：
+    \begin{python}
+for n in Fib(10):
+     print(n)
+    \end{python}
+    && 我们希望输出1, 1, 2, 3, 5, 8, 13, 21, 34, 55
+    && 怎么实现Fib？ 
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]{Fib}
+  \lstinputlisting{src/ch7/fib.py}
+\end{frame}
+
+\begin{frame}[fragile]{扩展练习}
+  \begin{easylist}
+    & 用Python编写程序，对本机指定目录下的文件进行扫描，把所有指定后缀名的文档
+    名称统一输出到一个文本文件中。
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{END}
+  ~
+\end{frame}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../python"
+%%% End:

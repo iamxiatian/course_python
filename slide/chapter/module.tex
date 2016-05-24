@@ -1,0 +1,262 @@
+\section{模块}
+
+\begin{frame}[fragile]{CH5 模块}
+  \begin{enumerate}
+     \item 模块介绍
+     \item 模块的导入方式
+     \item 模块的作用域
+     \item 模块的测试
+     \item 模块导入的路径搜索
+     \item 包
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{模块介绍}
+  \begin{easylist} \easyitem
+    & 随着程序代码越写越多，在一个文件里代码就会越来越长，越来越不容易维护。
+    & 为了编写可维护的代码，把函数分组放到不同的文件里，这样，每个文件包含的代码
+    就相对较少，很多编程语言都采用这种组织代码的方式。
+    & 在Python中，一个.py文件就称之为一个模块（Module）。
+    && 模块：把多个函数组织到一起，方便其他程序调用
+    && 提高了代码的可维护性
+    && 编写代码不必从零开始。当一个模块编写完毕，就可以被其他地方引用。
+
+    & 之前我们编写的程序也保存在.py文件中，程序和模块的区别在于：
+    && 程序的设计目标是运行
+    && 模块的设计目标是由其他程序导入并使用
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{模块的导入方式}
+  \begin{easylist}
+    & import importable
+    & import importable1, importable2, ..., importableN
+    & import importable as preferred\_name
+    & from importable import *
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{标准库中的模块使用示例}
+  \begin{python}
+import sys
+from pprint import pprint
+pprint(sys.path)
+  \end{python}
+
+['', \\
+ '/usr/lib/python3.4', \\
+ '/usr/lib/python3.4/plat-x86\_64-linux-gnu', \\
+ '/usr/lib/python3.4/lib-dynload', \\
+ '/usr/local/lib/python3.4/dist-packages', \\
+ '/usr/lib/python3/dist-packages']
+
+\end{frame}
+
+
+\begin{frame}[fragile, allowframebreaks]{自定义模块}
+  \lstinputlisting[keywordstyle=\ttfamily,
+  basicstyle=\rmfamily\normalsize]{src/ch5/hello.py}
+  
+  \newpage
+  ~\\
+  \begin{easylist}
+    & 行1的注释可以让hello.py文件直接在Unix/Linux/Mac上运行
+    & 行2的注释表示.py文件本身使用标准UTF-8编码
+    & 第4到6行是一个字符串，表示模块的文档注释，任何模块代码的第一个字符串都被视
+    为模块的文档注释
+    & 第8行导入了引用的模块
+    & 第10行使用\_\_author\_\_变量把作者写进去
+  \end{easylist}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{如何运行}
+  \begin{easylist}
+    & 方式1：
+    && 保存到hello.py文件中
+    && 进入命令行，通过cd命令进入hello.py文件所在的目录
+    &&& python3 hello.py
+    &&& python3 hello.py Tom    
+    & 方式2：
+    && 启动python交互环境
+    &&& \pyinline{import hello}
+    &&& \pyinline{hello.sayHi()}
+    &&& \pyinline{help(hello)}
+    & 观察sys.argv是否包含了模块对应的文件名称
+  \end{easylist}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{模块的作用域}
+  \begin{easylist}
+    & 在一个模块中，我们可能会定义很多函数和变量，但有的函数和变量我们希望给别人
+    使用，有的函数和变量我们希望仅仅在模块内部使用。
+    && 通过\_前缀定义的函数和变量只能在模块内部访问
+    && 其他函数和变量则是公开可访问的
+    && \_\_xxx\_\_ 这样的变量可以被直接引用，但通常有特殊含义
+    && 如\_\_name\_\_,  \_\_author\_\_
+    & private函数和变量“不应该”被直接引用，而不是“不能”被直接引用，是因为Python
+    并没有一种方法可以完全限制访问private函数或变量
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile, allowframebreaks]{作用域示例: hello2.py}
+    \lstinputlisting[keywordstyle=\ttfamily,
+  basicstyle=\rmfamily\normalsize]{src/ch5/hello2.py}
+ 
+ \begin{easylist}
+    & 请分别用命令行和Python交互环境进行测试
+    & 问题：能够在交互环境中通过hello2.\_sayInChinese()访问私有方法？
+    & 实验：添加代码，使得程序能够根据命令行传入的参数，决定源代码26行处是调用
+  \_sayInChinese()还是\_sayInEnglish()
+  && 假设命令行传入的第一个有效参数用于指定语言，中文对应为zh，英文对应为en
+  \end{easylist}
+  
+\end{frame}
+
+
+\begin{frame}[fragile, allowframebreaks]{hello\_lang.py}
+    \lstinputlisting[keywordstyle=\ttfamily,
+  basicstyle=\rmfamily\normalsize]{src/ch5/hello_lang.py}
+ 
+ \begin{easylist}
+    & python3 hello\_lang.py zh
+    & python3 hello\_lang.py en
+    & python3 hello\_lang.py zh Tom
+    & python3 hello\_lang.py en Tom
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{模块的测试}
+  \begin{easylist}
+    & 模块本身用于定义函数、类及其他一些内容
+    & 在模块中添加一些检查模块本身是否正常工作的测试代码非常有用
+    \lstinputlisting[keywordstyle=\ttfamily,
+    basicstyle=\rmfamily\normalsize]{src/ch5/hello3.py}   
+    & 打开Python交互环境测试
+    && \pyinline{import hello3}
+    && \pyinline{hello3.hello()}
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{\_\_name\_\_}
+  \begin{easylist}
+    & \pyinline{hello3.__name__}
+    & \pyinline{__name__}
+    & 因此，在测试模块时，可以通过如下方式：
+    \begin{python}
+      if __name__ == '__main__':
+          test_suite...
+    \end{python}
+    && 此时，如果将模块作为独立的程序，条件判断将会满足，继续执行测试代码
+    && 如果是import引入模块，则条件表达式不成立，测试代码被忽略
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{如何让Python找到自定义的模块}
+  \begin{enumerate}
+  \item 在源代码目录下执行python
+  \item  设置sys.path
+  \end{enumerate}
+
+  \lstinputlisting[keywordstyle=\ttfamily,
+    basicstyle=\rmfamily\normalsize]{src/ch5/path_test.py} 
+\end{frame}
+
+\subsection{包}
+\begin{frame}[fragile]{包的处理}
+  \begin{easylist}
+    & 包是一个有层次的文件目录结构，由模块和子包组成。
+    && 为平坦的名称空间加入了有层次的组织结构
+    && 允许程序员把有联系的模块组织到一起
+    && 允许分发者使用目录结构而非一大堆文件
+    && 有助于解决模块名称冲突问题
+  \end{easylist}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{\_\_init\_\_.py文件}
+  \begin{easylist}
+    & python的每个模块的包中，都有一个\_\_init\_\_.py文件，有了这个文件，我们才
+    能导入这个目录下的module
+    && 该文件可以为空
+    && 我们在导入一个包时，实际上导入了它的\_\_init\_\_.py文件
+  \end{easylist}
+
+\end{frame}
+
+\begin{frame}[fragile]{包的示例}
+  graphics/ \\
+  ~~~~\_\_init\_\_.py \\
+  ~~~~primitive/ \\
+  ~~~~~~~~\_\_init\_\_.py \\
+  ~~~~~~~~line.py \\
+  ~~~~~~~~fill.py \\
+  ~~~~~~~~text.py \\
+  ~~~~formats/ \\
+  ~~~~~~~~\_\_init\_\_.py \\
+  ~~~~~~~~png.py \\
+  ~~~~~~~~jpg.py \\
+\end{frame}
+
+\begin{frame}[fragile]{以上包结构的引用方式}
+  \begin{python}
+    import graphics.primitive.line
+    from graphics.primitive import line
+    from graphics.primitive import *
+    import graphics.formats.jpg as jpg
+  \end{python}
+  
+  \begin{easylist}
+    & 第1行在使用line中的方法时，只能用全名称引用：
+    && graphics.primitive.line.xxxx
+    & 第2行和第3行的方式，则可以直接使用如下方式
+    && line.xxxx, fill.xxxx
+    && jpg.xxxx
+  \end{easylist}
+
+\end{frame}
+
+\begin{frame}[fragile]{练习}
+  \begin{easylist}
+    & 实现以上包结构
+    && line.py, fill.py 和 text.py中分别写一个draw()方法，在该方法中输入一个简单
+    的字符串
+    && 在png.py和jpg.py中添加open()方法和close()方法，方法本身只输出一个提示字符
+    串即可
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{\_\_init\_\_.py中的\_\_all\_\_}
+  \begin{easylist}
+    & 通过from p1.p2 import *，可以一次性引入包里面的所有子模块
+    & 如果想限定默认引入的子模块集合，可以通过设置\_\_init\_\_.py，例如：
+    && 在\_\_init\_\_.py中添加如下内容：\\
+    \_\_all\_\_ = ['line', 'fill']
+    && from graphics.primitive import *
+    && 请完善代码并测试能够直接调用line.xxx()和text.xxxx()，并分析原因
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[plain]
+  \begin{center}
+    \Simley{1}{10}{1}
+
+    \Huge ---END---
+  \end{center}
+\end{frame}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../python"
+%%% End:

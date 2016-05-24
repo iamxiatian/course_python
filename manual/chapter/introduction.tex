@@ -1,0 +1,168 @@
+\chapter{引言}
+
+\section{什么是Python}
+
+如果你打算让计算机做更多的事情，而不仅仅局限于使用他人已经编好的可运行程序，例如，
+以某种你希望的方式对照片文件重新命名，或者信手写一个数独游戏以消磨时间，甚至是在
+科学兴趣探索中，进行一些复杂的数字运算，那么Python将是一种非常适合你需求的高级编
+程语言，其语法简单，安装测试方便，功能又异常强大，并拥有高效率的高层数据结构和面
+向对象特征。付出时间成本投资于Python语言，你一定会取得满意的回报。
+
+Python语言是一种少有的既简单又强大的高级编程语言，注重问题的解决而非编程语言的语
+法和结构，正如其官方所介绍：
+
+\begin{enumerate}
+\item Python is a programming language that lets you work more quickly and
+integrate your systems more effectively.
+
+(Python是一种能够让你工作更便捷、系统集成更高效的编程语言)
+
+\item Python is a clear and powerful object-oriented programming language,
+comparable to Perl, Ruby, Scheme, or Java.
+
+(相比于Perl、Ruby、Scheme或Java，Python是一种简单、强大的面向对象的编程语言)
+\end{enumerate}
+
+顺便说一句，Python语言的作者Guido van Rossum是根据英国广播公司的节目``Monty
+Python's Flying Circus''(蟒蛇飞行马戏)给这个语言命名的,并非他本人特别喜欢蛇缠起它
+们的长身躯碾死动物觅食。
+
+目前，Python正处于有2.x版本到3.x版本过渡的过程之中，Python 3又称为Python
+3000或Py3K，作为新一代Python语言，Python 3以上版本去除了之前版本中积累的一些老问
+题，并使语言更为清晰，但另一方面，由于Python2.x是如此的成功，在大量系统之中得到了
+广泛应用，出于移植成本考虑，短时间之内还无法将所有Python代码都升级为Python 3版本，
+因此，Python 2和Python 3还将长时间并存\footnote{Python 2.7之后，Python 2.x版本将
+  不会再有重大更新，新项目建议使用Python 3.x，到底选择Python2还是Python3，可阅
+  读：\url{https://wiki.python.org/moin/Python2orPython3} }，考虑到未来发展，本教
+程将采用Python 3的语言规范进行讲解\footnote{如果你已有大量的 Python 2.x 代码，也
+  可以使用工具将 2.x 转换成 3.x 的源代码，参
+  考\url{http://docs.python.org/3.5/library/2to3.html}}。
+
+
+
+\section{Python的安装}
+如果你已经安装了 Python 2.x ,那么就没必要卸载后再安装 Python 3.x ,实际上,可以将它
+们同时安装在电脑里。
+
+\subsection{Linux用户}
+如果你正在使用一个Linux的发行版，比如Ubuntu或Fedora，默认情况下，系统里面已经安
+装了Python，要测试系统中是否已经安装了Python以及Python的版本，可以打开一个shell
+程序，输入如下命令：
+\shellbox{\$ python -V
+
+Python 2.7.10
+}
+
+注意，参数V为大写形式，如果写成了小写的v，则代表以详细追踪方式显示Python的启动时
+的执行内容，而不是显示Python的版本。
+
+2016年以来发布的Linux版本，通常在装有python 2的同时，也安装有python3，以Ubuntu为
+例，在命令行上运行python3 -V，可以运行python3，并得到其版本信息，类似于如下：
+
+\shellbox{
+\$ python3 -V
+
+Python 3.4.3+ (default, Oct 14 2015, 16:03:50) 
+}
+
+\subsection{Mac用户}
+
+Mac OS X 用户 会 发 现已 经 在 系统中 安 装了 Python 。打开 Terminal.app 运行
+python -V ,接着参考上面关于 Linux 部分的建议。
+
+\subsection{Windows用户}
+
+访问 http://www.python.org 网站下载最新版,在写本书的时候是 3.0 beta 1 。仅
+有 12.8MB ,与大多其它的语言或软件相比,是非常紧凑的。安装与其它的 Win-
+dows 软件一样。
+
+有趣的是,大多的 Python 下载是来自 Windows 用户的。当然,这并不能说明问
+题,因为几乎所有的 Linux 用户已经在安装系统的时候默认安装了 Python 。
+
+
+\section{如何运行Python程序}
+我们将看一下如何用 Python 编写运行一个传统的“Hello World”程序。通过它,你将学会如
+何编写、保存和运行 Python 程序。
+
+有两种使用 Python 运行你的程序的方式 —— 使用交互式的带提示符的解释器或使用源文件。
+我们将学习这两种方法。
+
+\subsection{使用带提示符的解释器}
+在 shell 提示符下,键入python命令启动解释器。对 Windows 用户,如果你已经配置好
+了PATH变量,那么就可在命令行中启动解释器。
+
+如果使用 IDLE ,点击 开始 $\rightarrow$ 程序 $\rightarrow$ Python 3.0
+$\rightarrow$ IDLE (Python GUI)。键入 print('Hello World') ,按回车键。将会看
+到 Hello World 字样的输出。
+
+注意, Python会在下一行立即给出你输出！对于刚键入的Python语句print('Hello World')，
+我们使用print(不要惊讶，这里的打印默认是``打印''到显示器上，即在显示器上输出结果)来
+打印你提供给它的值，这里提供的文本是``Hello World'' ,它被立即打印在屏幕上。
+
+至于如何退出解释器提示符，如果你使用的是Linux/BSD shell，那么按``Ctrl-d''退出提示
+符，如果是在Windows命令行中,则按``Ctrl-z''，再按回车键退出。
+
+\subsection{运行Python源代码文件}
+
+
+
+
+\section{工作环境的配置}
+
+工欲善其事必先利其器，搭建一个好的工作环境，对于提高生产效率是十分重要的。下面，
+我们从源代码编辑器和增强命令行交互工具两个方面对Python工作环境进行介绍。
+
+\subsection{源代码编辑器的选择}
+
+支持Python的编辑器有很多，在一个由多个工具组成的环境中，最好只关注与Python代码编
+写相关的编辑器。实际上，简单的代码编辑器和集成开发环境之间的边界并不明显，一些简
+单的编辑器也会提供与系统交互和扩展的机制。对于代码编写来说，一个配置齐全的源代码
+编辑器可以降低一些重复性工作，有效辅助代码的编写。
+
+多年以来，Python源代码编辑器的最佳选择是vim或Emacs，初次接触这两个编辑器会觉得其
+操作并不友好，甚至感觉完全无法使用，这是因为这两个编辑器都引入了大量键盘快捷键，
+只有经过一段时间的熟悉之后，才会体会到它们的强大之处，如果你觉得自己还年轻，那么
+投入精力去掌握它们，你的付出会让你终生受用。
+
+Vim在多数Linux的发行版和苹果的笔记本操作系统中，默认都已经安装\footnote{部分系统
+  默认安装的是vi，而vim是vi的升级版本，兼容vi的所有指令，并拥有大量新特性，如果系
+  统默认安装的是vi，建议读者进一步安装vim。}，可以直接使用，而Emacs通常需要单独安
+装。相比于Vim或Emacs，新潮的开发人员或初学者，可能更喜欢以鼠标操作为主的编辑器，
+其中，Sublime Text(http://www.sublimetext.com/)是目前非常流行的编辑器，对Python
+的语法支持也很好。
+
+综上，初学者可以先需用Sublime Text作为Python的源代码编辑器，并逐步学习使
+用Vim或Emacs，提高熟练程度。
+
+\subsection{扩展Python shell}
+
+\subsubsection{ipython}
+
+\subsubsection{bpython}
+bpython是一个不错的Python解释器界面，它将集成开发环境的常见语法提示等常见功能封
+装在在一个简单、轻量级的包里，可以在终端窗口里面直接运行，保持python shell的简洁、
+快速和实用特点。
+
+bpython可以利用pip快速安装：
+
+\shellbox{
+\$pip install bpython
+}
+
+bpython的功能十分丰富，包括：
+
+\begin{itemize}
+\item 内置的语法高亮 – 使用Pygments排版你敲出的代码，并合理配色
+\item 根据你的行为，显示自动补全的建议
+\item 为任何Python函数列出所期望的参数 – 可以显示你调用的任何函数的参数列表
+\item “Rewind”功能会调出内存里的最后一行代码并重新执行
+\item 可以将你输入的代码送到pastebin
+\item 可以将你输入的代码保存到一个文件
+\item 自动缩进
+\item 支持Python 3
+\end{itemize}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../python"
+%%% End:
