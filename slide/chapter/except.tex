@@ -325,11 +325,71 @@ if book.price > 50:
   \end{easylist}
 \end{frame}
 
-\begin{frame}[fragile]{代码规范检查}
+\subsubsection{代码规范性检查工具}
+\begin{frame}[fragile]{代码规范性检查工具}
   \begin{easylist}
-    & PEP8:Style Guide for Python Code
-    && https://www.python.org/dev/peps/pep-0008/
-    & 工具：\href{https://www.pylint.org/}{pylint}
+    & pep8
+    & pylint
+    & pyflakes(略)
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{pep8}
+  \begin{easylist}
+    & PEP: Python增强建议(Python Enhancement Proposals)
+    && describe and document the way python language evolves. 
+    && 完整的PEP索引列表：\url{https://www.python.org/dev/peps/}
+    & PEP 8: Style Guide for Python Code
+    && Pythonic way to write code
+    && \url{https://www.python.org/dev/peps/pep-0008/}
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]{pep8示例}
+  \begin{easylist}
+    & 新建finder.py(源代码见下张幻灯片)
+    & 打开终端，进入finder.py文件所在目录
+    & 执行命令：\\
+    ~~~~pep8~ finder.py
+  \end{easylist}
+
+  \begin{tcolorbox}[colback=green!5,colframe=green!50!black,title=输出结果]
+    finder.py:3:1: E302 expected 2 blank lines, found 1 \\
+    finder.py:19:1: W293 blank line contains whitespace \\
+    finder.py:19:1: W391 blank line at end of file
+  \end{tcolorbox}
+\end{frame}
+
+
+\begin{frame}[fragile]{finder.py源代码}
+  \begin{lstlisting}[frame=single, language=Python,
+    basicstyle=\scriptsize,numberstyle=\tiny\color{orange!90}\ttfamily,
+    showstringspaces=false] 
+# coding: utf-8
+
+def first_index_of(sorted_name_list, name, start=0):
+    '''获取排序列表sorted_name_list中指定名称元素的位置
+
+    如果元素name在sorted_name_list中存在，则返回其下标，
+    下标从0开始计数；如果不存在，则返回-1.
+
+    >>> first_index_of([1,2,3], 1)
+    0
+    >>> first_index_of([1,2,3], 5)
+    -1
+
+    '''
+    try:
+        return sorted_name_list.index(name)
+    except ValueError as e:
+        return -1
+  \end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{pylint}
+  \begin{easylist}
+    & \url{https://www.pylint.org/}
     && star your python code!
     && Coding Standard
     &&& checking line-code's length,
@@ -351,7 +411,7 @@ if book.price > 50:
     && 最终输出综合评分结果，例如：
   \end{easylist}
 
-  \begin{tcolorbox}[colback=green!5,colframe=green!10!black,title=pylint输出结果片断]
+  \begin{tcolorbox}[colback=green!5,colframe=green!50!black,title=pylint输出结果片断]
     \textit{
       Global evaluation\\
       -----------------\\
@@ -361,22 +421,77 @@ if book.price > 50:
 \end{frame}
 
 \subsubsection{单元测试}
+% TODO: 参考Python高级编程 CH11
 \begin{frame}[fragile]{单元测试}
-\begin{easylist}
-  & 单元测试是用来对一个模块、一个函数或者一个类来进行正确性检验的测试工作。
-  & TDD：Test-Driven Development
-  && 敏捷开发中的一项常用技术和设计方法，即通过测试来推动整个开发的进行，在明确
-  需要开发的功能后，首先思考如何对功能进行测试，进而完成测试用例代码的编写，然后
-  实现具体产品功能，满足之前设计的测试用例。
-
-
-\end{easylist}
-
-  
-
-  
+  \begin{easylist}
+    & 单元测试是用来对一个模块、一个函数或者一个类来进行正确性检验的测试工作。
+    & TDD：Test-Driven Development
+    && 敏捷开发中的一项常用技术和设计方法，即通过测试来推动整个开发的进行，在明确
+    需要开发的功能后，首先思考如何对功能进行测试，进而完成测试用例代码的编写，然后
+    实现具体产品功能，满足之前设计的测试用例。
+    & Python的单元测试模块
+    && unittest：最初由Steve Purcell编写，以前叫PyUnit
+    && doctest: 一个依赖于Python的doc字符串的测试工具
+    & 第三方提供的单元测试工具(略)
+    && nose
+    && py.test
+  \end{easylist}
 \end{frame}
 
+\begin{frame}[fragile]{unittest}
+  \begin{easylist}
+    & 类似于Java中的JUnit
+    & 提供了一个TestCase基类，该基类拥有一个用来验证输入输出的方法集合
+    & 示例
+    && 假设有一个工具方法模块utils.py, 里面包含一个求平均数的函数average
+    && 现在需要编写对应的单元测试
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile, allowframebreaks]{test\_utils.py代码清单}
+  \lstinputlisting[keywordstyle=\ttfamily]{src/ch8/test_utils.py}
+
+  运行``python test\_utils.py''进行测试
+\end{frame}
+
+
+\begin{frame}[fragile]{utils.py代码清单}
+  \lstinputlisting[keywordstyle=\ttfamily]{src/ch8/utils.py}  
+\end{frame}
+
+\begin{frame}[fragile]{doctest}
+  \begin{easylist}
+    & doctest：在docstring中编写测试代码
+    & 优点：
+    && 可以通过示例创建文档和测试
+    && 文档示例总是最新的
+    & 注意：
+    && doctest应该只被用于在文档中提供人类可读的示例
+    && 帮助文档有可能因为加入过多的测试代码而破坏了其可阅读性
+    & 例子：
+    && 为上例中的utils.py中的average函数添加docstring
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]{utils2.py代码清单}
+  \lstinputlisting[keywordstyle=\ttfamily]{src/ch8/utils2.py}  
+\end{frame}
+
+\begin{frame}[fragile]{第三方测试框架}
+  \begin{easylist}
+    & unittest过于僵化，不易扩展
+    && 必须继承TestCase
+    && 必须使用TestCase本身所提供的断言方法
+    && 测试方法名称前需要加test
+    && $\cdots$
+    & 全部使用doctest替代单元测试会破坏文档的可阅读性
+    && $\cdots$
+    & 提出了一些第三方测试框架
+    && nose
+    && py.test
+  \end{easylist}
+\end{frame}
 
 \begin{frame}[plain]{}
   \begin{center}
