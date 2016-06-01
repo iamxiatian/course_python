@@ -1,5 +1,18 @@
-\section{Web处理}
+\section{Python应用开发}
 
+\begin{frame}[fragile]{CH9 Python应用开发}
+  \begin{easylist} \easyitem
+    & Web服务器
+    && python -m http.server
+    && Flask
+    & 数据库
+    && MySQL
+  \end{easylist}
+
+\end{frame}
+
+
+\subsection{Web服务器}
 \begin{frame}[fragile]{Web服务器}
   \begin{easylist} \easyitem
     & 最简单的Python Web服务器
@@ -42,9 +55,123 @@
   \lstinputlisting[keywordstyle=\ttfamily]{src/web/flask2.py}
 \end{frame}
 
-\begin{frame}[fragile]{练习}
-  实现一个Web程序，在网页上输入一个url地址，提交后，通过浏览器显示该地址所包含的所有图片。
+
+\subsection{操作数据库}
+\begin{frame}[fragile]{操作数据库}
+  \begin{easylist}
+    & 商业数据库
+    && Oracle
+    && Microsoft SQL Server
+    && IBM DB2
+    && Sybase
+    & 开源数据库
+    && \textit{MySQL}
+    && PostgreSQL
+    && Sqlite: 嵌入式数据库
+  \end{easylist}
 \end{frame}
+
+
+\begin{frame}[fragile]{MySQL}
+  \begin{easylist}
+    & MySQL是Web世界中使用最广泛的数据库服务器
+    & 我们选择5.5以上版本进行测试
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{MySQL的编码设置}
+  \begin{easylist}
+    & 把数据库默认的编码全部改为UTF-8,防止出现乱码问题
+    & 配置文件的位置：
+    && /etc/my.cnf或者/etc/mysql/my.cnf
+    & Windows下，安装时请选择UTF-8编码
+  \end{easylist}
+
+  \begin{tcolorbox}[title=my.cnf的设置]
+    [client]\\
+    default-character-set = utf8\\
+
+    [mysqld]\\
+    default-storage-engine = INNODB\\
+    character-set-server = utf8\\
+    collation-server = utf8\_general\_ci
+  \end{tcolorbox}
+
+\end{frame}
+
+\begin{frame}[fragile]{MySQL测试}
+   利用命令行登录MySQL：mysql -u root -p
+
+   查看MySQL的变量设置：\\
+  
+   \begin{tcolorbox}[title={mysql> show variables like '\%char\%';}]
+     \scriptsize
+\begin{verbatim}
++--------------------------+----------------------------+
+| Variable_name            | Value                      |
++--------------------------+----------------------------+
+| character_set_client     | utf8                       |
+| character_set_connection | utf8                       |
+| character_set_database   | utf8                       |
+| character_set_filesystem | binary                     |
+| character_set_results    | utf8                       |
+| character_set_server     | utf8                       |
+| character_set_system     | utf8                       |
+| character_sets_dir       | /usr/share/mysql/charsets/ |
++--------------------------+----------------------------+
+8 rows in set (0.00 sec)
+\end{verbatim}
+   \end{tcolorbox}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{在MySQL中创建数据库和表}
+\begin{verbatim}
+create database test;
+use test;
+
+CREATE TABLE `users` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `email` varchar(255) COLLATE utf8_bin NOT NULL,
+    `password` varchar(255) COLLATE utf8_bin NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+AUTO_INCREMENT=1 ;
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{MySQL驱动}
+  \begin{easylist}
+    & MySQL服务器以独立的进程运行，并通过网络对外服务
+    & 需要支持Python的MySQL驱动来连接到MySQL服务器
+    & Drviers
+    && PyMySQL(我们选择PyMySQL连接MySQL数据库)
+    &&& Pypi package: pymysql
+    &&& import pymysql
+    && MySQL Connector
+    &&& Pypi Package: mysql-connector-python
+    &&& import mysql.connector
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]{PyMySQL}
+  \begin{easylist}
+    & 主页：\url{https://github.com/PyMySQL/PyMySQL}
+    & 安装：pip install PyMySQL
+
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]{PyMySQL使用示例}
+  \lstinputlisting[keywordstyle=\ttfamily]{src/ch9/mysql.py}
+\end{frame}
+
+%\begin{frame}[fragile]{练习}
+%  实现一个Web程序，在网页上输入一个url地址，提交后，通过浏览器显示该地址所包含的所有图片。
+%\end{frame}
 
 
 \begin{frame}[fragile]{科研人员在线社交媒体行为分析}
